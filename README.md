@@ -387,21 +387,21 @@ The`man` command to find more information about the ls command by typing - `man 
 
 **31.List all student data files where the student ID is between 1050 and 1059 AND the first name starts with 'A'.**
 
-```ls {1050..1059}*```  ```ls {1050..1059}*```  ```ls 105*```
-
+```ls {1050..1059}*_A*_*_*```  ```ls {1050..1059}*_A*_*_*```  ```ls 105*_A*_*_*```
 1050_Amber_L_Ratemo.txt    1054_Amber_L_Yebo.txt    1058_Amber_P_Kamau.txt
 1051_Amber_L_Wambugu.txt   1055_Amber_P_Atieno.txt  1059_Amber_P_Kimani.txt
 1052_Amber_L_Wanyonyi.txt  1056_Amber_P_Chacha.txt
 1053_Amber_L_Yegon.txt     1057_Amber_P_Idris.txt
 
+
 **32. List all student data files where the student ID is between 1110 and 1119 AND the middle initial is 'K'.**
 
-```ls {1110..1119}*```   ```ls {1110..1119}*```  ```ls 111*```
+```ls {1110..1119}*_*_K_*```
 
-1110_Ami_K_Chacha.txt  1114_Ami_K_Kiptoo.txt   1118_Ami_K_Mwangi.txt
-1111_Ami_K_Idris.txt   1115_Ami_K_Maribe.txt   1119_Ami_K_Nuru.txt
-1112_Ami_K_Kamau.txt   1116_Ami_K_Maxx.txt
-1113_Ami_K_Kimani.txt  1117_Ami_K_Mulanga.txt
+1110_Ami_K_Chacha.txt  1113_Ami_K_Kimani.txt  1116_Ami_K_Maxx.txt     1119_Ami_K_Nuru.txt
+1111_Ami_K_Idris.txt   1114_Ami_K_Kiptoo.txt  1117_Ami_K_Mulanga.txt
+1112_Ami_K_Kamau.txt   1115_Ami_K_Maribe.txt  1118_Ami_K_Mwangi.txt
+
 
 **33. List the student data file for 'Alice Otieno' (exact first and last name, any middle initial).**
 
@@ -428,4 +428,103 @@ The`man` command to find more information about the ls command by typing - `man 
 1003_Amber_C_Idris.txt  1039_Amber_L_Idris.txt  1075_Amber_W_Idris.txt
 1021_Amber_K_Idris.txt  1057_Amber_P_Idris.txt  1093_Ami_C_Idris.txt
 
+## Section 2: Use grep ,find for Advanced Search.
 
+**1. Find all student data files (.txt) that contain the word "Mathematics" (case-sensitive).**
+
+```find . -name "*.txt" -exec grep "Mathematics" {} +```
+
+./2400_Martin_L_Ratemo.txt:Mathematics;69.2215
+./1852_Joanne_L_Kiptoo.txt:Mathematics;57.4500
+./1697_James_P_Ouma.txt:Mathematics;64.4143
+
+**2. Find all student data files (.txt) where the student's email address ends with @hotmail.com.**
+
+```find . -name "*.txt" -exec grep "@hotmail.com" {} +```
+
+./3044_Rachel_P_Mwangi.txt:Email: rpmwangi@hotmail.com
+./3154_Yannis_W_Otieno.txt:Email: ywotieno@hotmail.com
+
+**3. Count how many student data files contain the phrase "CountyNum: 1".**
+
+```find . -name "*.txt" -exec grep "CountyNum: 1$" {} + | wc -l```
+
+```64```
+ - wc - word count 
+ - l - line count option 
+ - $ - end of line
+
+**4. List the names (full path) of all student data files (.txt) that have a score of 99 for any subject**
+
+```find . -name "*.txt" -exec grep ";99" {} + | xargs realpath```
+ 
+/home/lwachira/Documents/git/quatrix-mentor/.sampledata/2115_Joshua_K_Yegon.txt:Mathematics;99.6062
+/home/lwachira/Documents/git/quatrix-mentor/.sampledata/1631_James_C_Atieno.txt:Physics;99.2595
+
+-  xargs - takes input (usually from a pipe) and converts it into arguments for another command. It takes a list of things and gives them to another command to use. 
+
+**5. Find all student data files (.txt) that contain the name "Alice" (case-insensitive).**
+
+```find . -name "*.txt" -exec grep "Alice" {} +```
+
+./1212_Alice_K_Ratemo.txt:Name: Alice K. Ratemo
+./1269_Alice_W_Yegon.txt:Name: Alice W. Yegon
+./1189_Alice_C_Mulanga.txt:Name: Alice C. Mulanga
+
+**6.Find all student data files (.txt) that were created within the last 24 hours (assuming you just ran generate_data.sh).**
+
+```find . -name "*.txt" -mtime -10```
+
+./2400_Martin_L_Ratemo.txt
+./1852_Joanne_L_Kiptoo.txt
+./1697_James_P_Ouma.txt
+./3044_Rachel_P_Mwangi.txt
+-  -mtime -10 list files creates in less than 10 days. No file was created within the last 24 hours. 
+  - To check time modified: 
+
+  ```stat ./1761_Joan_L_Kimani.txt```
+
+  Size: 175       	Blocks: 8          IO Block: 4096   regular file
+Device: 259,2	Inode: 4591709     Links: 1
+Access: (0644/-rw-r--r--)  Uid: ( 1007/lwachira)   Gid: ( 1007/lwachira)
+Access: 2025-10-22 10:43:34.431412366 +0300
+Modify: 2025-10-13 11:25:04.434598279 +0300
+Change: 2025-10-13 11:25:04.434598279 +0300
+
+**7. Find all student data files (.txt) that are larger than 200 bytes.**
+
+```find . -name "*.txt" -size +200c```
+
+./1697_James_P_Ouma.txt
+./3044_Rachel_P_Mwangi.txt
+./2519_Mary_W_Maribe.txt
+ - Kilobytes - +200K
+- Megabytes - +200M
+- Gigabytes - +200G
+
+**8. Find all .csv files in the current directory that contain the word "Nairobi".**
+
+```find . -name "*.csv" -exec grep "Nairobi" {} +```
+./.test.county.csv:47;Nairobi
+./.test.school.csv:231;47;Nairobi - National
+./.test.school.csv:232;47;Nairobi - Provincial
+./.test.school.csv:233;47;Nairobi - District
+
+**9. List all student IDs (the 4-digit number) from student data files that have "Physics" listed as a subject**
+
+```find . -name "*.txt" -exec grep -l "Physics" {} + | xargs grep "Id"```
+
+./.sampledata/2400_Martin_L_Ratemo.txt:Id: 2400
+./.sampledata/1697_James_P_Ouma.txt:Id: 1697
+
+```grep -r -B 10 "Physics" | grep -A 10 "Id"```
+
+**10. Find all student data files (.txt) that contain the word "Email:" AND "CountyNum: 5".**
+
+```find . -name "*.txt" -exec grep -l "Email" {} + | xargs grep "CountyNum: 5"```
+
+./.sampledata/2400_Martin_L_Ratemo.txt:CountyNum: 5
+./.sampledata/2598_Maryanne_P_Ratemo.txt:CountyNum: 5
+./.sampledata/3254_Zora_C_Kamau.txt:CountyNum: 5
+
+```grep -r -B "Email" | grep -A 1 "CountyNum: 5"```
