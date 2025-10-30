@@ -456,10 +456,12 @@ The`man` command to find more information about the ls command by typing - `man 
 
 **4. List the names (full path) of all student data files (.txt) that have a score of 99 for any subject**
 
-```find . -name "*.txt" -exec grep ";99" {} + | xargs realpath```
+`find . -name "*.txt" -exec grep ";99" {} + | xargs realpath`
  
+```
 /home/lwachira/Documents/git/quatrix-mentor/.sampledata/2115_Joshua_K_Yegon.txt:Mathematics;99.6062
 /home/lwachira/Documents/git/quatrix-mentor/.sampledata/1631_James_C_Atieno.txt:Physics;99.2595
+```
 
 -  xargs - takes input (usually from a pipe) and converts it into arguments for another command. It takes a list of things and gives them to another command to use. 
 
@@ -528,3 +530,170 @@ Change: 2025-10-13 11:25:04.434598279 +0300
 ./.sampledata/3254_Zora_C_Kamau.txt:CountyNum: 5
 
 ```grep -r -B "Email" | grep -A 1 "CountyNum: 5"```
+
+## Regular Expressions - RegEx
+Regular expressions (popularly referred to as simply RegEx) are patterns that describes a set of strings that matches the pattern. This is helpful when:
+
+- Searching for patterns in large files or data sets
+- Replacing text/strings in large data sets that's hard to do with a simple Find and replace function.
+
+## RegEx Metacharacters & Literals
+buzz123 - any alpha-numeric set of characters are matched as they are eg in this case a RegEx pattern such as this will try to match any occurrence of the literal set of characters buzz123 in a given string.
+
+1. ```.``` the dot - represents any character eg a-z, A-Z, 0-9, and special characters
+2. ```^``` the carret symbol or character - represents beginning of the line. However when inside a square bracket, negates whatever characters are inside the square bracket.
+3. ```$``` the carret symbol or character - represents end of the line.
+4. ```?``` question mark - represents a non-greedy match for the preceeding regex pattern.
+5. ```*``` asterisk or star. Represents 0 or more occurences of what preceeds the character eg.
+.* - match any character if it occurs 0 or more times.
+f* - match f 0 or more times
+6. ```+``` plus or addition sign. Represents 1 or more occurences of what preceeds the character eg.
+.+ - match any character if it occurs 1 or more times.
+f+ - match f 1 or more times
+7. ```|``` - vertical bar. This represents an or condition eg a|b will match if either an a or b character is present in the string. NB: This should not be confused with the bash or zsh command line pipe that has a different effect.
+8. ```[]``` - square brackets. Matches a set of characters inside it. eg [abc] matches any occurrence of a, b or c. When a carret is used inside the square brackets eg [^abc] matches any character except a, b or c.
+9. ```{}``` - curly brackets. Used to indicate precisely how many occurences you wish to match. eg
+z{1} - matches 1 occurences of the character z
+z{1,} - matches 1 or occurences of the character z
+z{2,} - matches 2 or occurences of the character z
+z{2,4} - matches 2 to 4 occurences of the character z
+10. ```()``` - capture groups enclosed using regular brackets. A lot of use cases for regex revolve around search and replace. In order to re-use a successful matched patterns results, it is usually very helpful to take that result and use it in the final replace parameter. eg
+
+You have a list of countries:
+- Kenya
+- Uganda
+- Tanzania
+
+(Ken)ya - will capture Ken
+(\d{3}).* - capture Ken, Uga, and Tan. Try the above using online RegEx tester Regex101. Copy and paste the above text to Regex101 inside the TEST STRING field. To try our a regex pattern, enter it into the REGULAR EXPRESSION FIELD.
+11. ```\``` - front-slash or used to preceed a special character that you wish to escape. Special symbols/characters need to be escaped eg:
+\. - in this case, the dot is escaped and therefore the dot is treated as simple a dot and not representing any character
+\? - the question mark is escaped. Therefore instead of being treated as a non-greedy indicator, it is matched to the actual question mark.
+
+## Basic RegEx
+Using the file .test.student.csv and .test.student.subject.csv using gedit or Text Editor or kwrite or VS Code and taking advantage of its regex feature, find all students with:
+
+1. Last name Atieno
+- Using Vs Code (ctrl+f)
+
+```^\d+;\w+\s\w\sAtieno;.*```
+
+2. Phone number for Airtel ie 073XX.
+```^\d+;\w+\s\w\s\w+;(073)\d+.*```
+
+3. From Tharaka Nithi ie county number 13. Use .test.student.csv file for this
+```^\d+;\w+\s\w\s\w+;\d+\W\d+\W\d+;13```
+
+4. From Nakuru that got 50% and above.
+5. Email address that are either @gmail or @email.com.
+```^\d+;\w+\s\w\s\w+;\d+\W\d+\W\d+;\d+;\w+@(gmail|email)\.com```
+
+#### Repeat the above using:
+
+1. grep to find all students with last name Atieno.
+
+`grep -E "Atieno;" .test.student.csv`
+```
+1001;Amber C Atieno;0769-699-891;36;203;acatieno@yahoo.com
+1019;Amber K Atieno;0720-548-173;2;142;akatieno@hotmail.com
+1037;Amber L Atieno;0783-364-995;21;142;alatieno@hotmail.com
+1055;Amber P Atieno;0720-022-522;13;26;apatieno@hotmail.com
+```
+
+2. grep to find Phone number for Airtel ie 073XX
+
+`grep -E ";073[0-9\-]+;" .test.student.csv`
+```
+1007;Amber C Maribe;0739-960-684;23;118;acmaribe@hotmail.com
+1008;Amber C Maxx;0730-690-514;41;67;acmaxx@email.com
+1018;Amber C Yebo;0732-383-465;32;110;acyebo@hotmail.com
+1021;Amber K Idris;0736-403-402;20;159;akidris@hotmail.com
+```
+
+3. grep to find: From Tharaka Nithi ie county number 13.
+
+`grep -E ";13;" .test.student.csv`
+```
+1030;Amber K Otieno;0771-891-499;13;55;akotieno@gmail.com
+1045;Amber L Mulanga;0788-421-002;13;146;almulanga@gmail.com
+1055;Amber P Atieno;0720-022-522;13;26;apatieno@hotmail.com
+1095;Ami C Kimani;0728-865-407;13;54;ackimani@gmail.com
+1208;Alice K Mwangi;0757-262-208;13;160;akmwangi@yahoo.com
+1240;Alice P Kiptoo;0719-821-652;13;65;apkiptoo@gmail.com
+```
+
+4. grep to find: Email address that are either @gmail or @email.com.
+
+`grep -E "(@gmail|@email)\.com" .test.student.csv`
+```
+1003;Amber C Idris;0763-360-956;16;225;acidris@email.com
+1004;Amber C Kamau;0704-852-218;8;149;ackamau@email.com
+1006;Amber C Kiptoo;0784-567-283;19;142;ackiptoo@gmail.com
+1008;Amber C Maxx;0730-690-514;41;67;acmaxx@email.com
+1009;Amber C Mulanga;0753-068-016;25;51;acmulanga@email.com
+```
+
+
+1. less to: find all students with last name Atieno.
+
+```less -p "Atieno;" .test.student.csv ```
+
+2. less to find Phone number for Airtel ie 073XX.
+
+```less -p "073[0-9\-]+" .test.student.csv ```
+
+3. less to find: From Tharaka Nithi ie county number 13.
+
+```less -p ";13;" .test.student.csv ```
+
+4. less to find: Email address that are either @gmail or @email.com.
+
+`less -p "(@gmail|@email)\.com" .test.student.csv`
+
+## Advanced RegEx
+
+Presented with the following data set of id, name, phone (Kenyan):
+E.g
+```
+2956;Yannis C Atieno;(0775)-705-148
+2957;Yannis C Chacha;0731-485430
+2958;Yannis C Idris;786-408-485
+2959;Yannis C Kamau;0700-823-247
+```
+
+You realize the phone numbers are not uniformly formatted. You are then tasked to reformat the above data so that:
+
+It conforms to the following format eg:
+2956;Yannis C Atieno;+254775705148
+2957;Yannis C Chacha;+254731485430
+
+1. That is, add the prefix +254 and remove characters such as (, ), - or spaces.
+
+`;\(?0?(\d{3,})\)?[\s-]?(\d{3})[\s-]?(\d{3})`
+
+replace : `+254$1$2$3`
+###### Solution:
+- \(?-....)?- to capture the phone number that starts with (0775).
+- 0?- to capture the phone number that starts with 0. since not all numbers starts with 0 we have to add the ? for optionality.
+- (\d{3,})- the fisrt capture group and since there is a number with more than 3 digits i have to add the(3,) e.g 254794-
+- [\s-]?- to match the space and the hyphen but its optional(?) since not all numbers are seperated by a hyphen or a space.
+- (\d{3})- the second capture group (-705-) e.g 0775-705-148
+- [\s-]?- to match the space and the hyphen but its optional(?) since not all numbers are seperated by a hyphen or a space.
+- (\d{3})- the third capture group (-148) e.g 0775-705-148
+
+2. We also need to give each student a username that will be derived from their name as follows:
+Yannis C Atieno will have a username ycatieno
+
+`([A-Z])([a-z]+)\s([A-Z])\s([A-Za-z]+)(;\+254\d+)`
+
+replace: `$1$2 $3 $4$5;\L$1\L$3\L$4`
+
+- The \L is for the lowercase.
+###### Solution:
+- $1- ([A-Z])-The first initial of the first name(Y)from Yannisi
+- $2- ([a-z]+)-The name (annisi) from the first name Yannisi
+- \s- space after the first name.
+- $3- ([A-Z])- The middle initial name (C) the range is in caps because the initial is in uppercase.
+- \s- The space after the middle initial.
+- $4- ([A-Za-z]+)- The last name (Atieno) the range is uppercase and lower case.
+- $5- (;\+254\d+)- The phone number \+ to escape the + sign then the 254 then the \d+ for the rest of the digits.
