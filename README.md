@@ -697,3 +697,185 @@ replace: `$1$2 $3 $4$5;\L$1\L$3\L$4`
 - \s- The space after the middle initial.
 - $4- ([A-Za-z]+)- The last name (Atieno) the range is uppercase and lower case.
 - $5- (;\+254\d+)- The phone number \+ to escape the + sign then the 254 then the \d+ for the rest of the digits.
+
+### Repeat the #1 and #2 using sed tool
+
+1. That is, add the prefix +254 and remove characters such as (, ), - or spaces.
+`sed -E 's/[()-]//g; s/0?(254)?([0-9]{3})(\s?)([0-9]{3})(\s?)([0-9]{3})/+254\2\4\6/' regex.test.csv `
+```
+2956;Yannis C Atieno;+254775705148
+2957;Yannis C Chacha;+254731485430
+2958;Yannis C Idris;+254786408485
+```
+###### solution
+- s/[()-]//g- to substitute the () and the - with nothing `/` we will add the `g` global to substitute their occurrences in the whole file.
+- s/0?(254)?- to substitute numbers that start with 0 or 254 but its ? optional since not all numbers start with 0/254.
+- ([0-9]{3})- our second capture group for the first three digits.
+- (\s?)- third capture group for the numbers seperated by a space and its optional, since not all numbers are seperated by a space.
+- ([0-9]{3})(\s?)([0-9]{3})- the forth ,fifth and sixth capture group. for the rest of the phone number.
+- /+254\2\4\6/- substitute (/)it with +254 the second, forth and sixth capture group.(/)close the substitution then the file name regex.test.csv.
+
+2. We also need to give each student a username that will be derived from their name as follows:
+Yannis C Atieno will have a username ycatieno
+
+`sed -E 's/^([0-9]+);([A-Z])([a-z]+) ([A-Z]) ([A-Za-z]+);(\+254[0-9]+)/\1;\2\3 \4 \5;\6;\L\2\4\5/' regex.test.csv `
+
+2956;Yannis C Atieno;+254775705148;ycatieno
+2957;Yannis C Chacha;+254731485430;ycchacha
+###### solution
+- /^([0-9]+);- substitute ^ start of line the school id (2956)followed by the ; separator.
+- ([A-Z])- to capture the Y in Yannis.
+- ([a-z]+)- to capture the annis in Yannis. Then followed by a space for the space separator.
+- ([A-Z])- to capture the middle innitial(C) followed  by a space.
+- ([A-Za-z]+);- to cature the last name (Atieno) followed by the; separator.
+- (\+254[0-9]+)- to capture the phone number.
+- /\1;\2\3 \4 \5;\6;\L\2\4\5/' regex.test.csv `- substitute it (/)with \1;\2\3 \4 \5;\6 then add the username at the end ;\L(for lowercase)\2\4\5.
+## The vi / vim Editor
+- vi and vim are editors that are Linux editors.
+
+###### Using vi
+Start vi Editor - start/open a vi editor session by simply typing vi pathToFile or vim pathToFile. vim is an improved version of vi.
+vi has two(2) modes:
+- Command mode - vi always starts in this mode. This mode allows you to:
+-  Save
+-  Copy lines (or text)
+-  Paste text
+-  Delete lines
+-  Quit/exit from vi
+- Insert mode - edit or type new text
+### Commonly used vi commands
+- Get into insert mode simply type i.
+- Moving the cursor (Up, down, left, right arrows also work!):
+  -  k - up one line
+  -  j - down one line
+  -  h - to the left one character position
+  -  l - to the right one character position
+- Invoke save, quit, move to given line commands be preceded by a colon : then hitting the enter/return key eg:
+  -  :q - quits/exits vi
+  -  :q! - quit and ignore any changes made
+  -  :w - save
+  -  :wq - save and quit
+  -  :n - where n is any number so e.g. :36 will take the cursor to line #36 of the file if it exists.
+- Copying, Pasting & deleting text:
+  -  yy - copies the current line
+  -  p - paste line(s) or text copied after the cursor.
+  -  P - paste line(s) or text copied before the cursor.
+  -  dd - deletes the line where the cursor is on.
+  -  2yy - copies two(2) lines beginning with the one the cursor is on. Replace 2 with however many lines you wish to copy. Paste them all using p or P.
+###### Task:
+Test of vi knowledge (at the end of each step, save the file and exit vi):
+
+1. Open the file created above an.other.conf.
+
+`vim ~/Documents/vi-sandbox/.an.other.conf`
+
+2. Edit server_name to read local.ann.other.
+
+ `press i for insert. Edit local.an.other to local.ann.other`
+
+3. Copy the line with access_log... and paste below the line with error_log
+- navigate to the line with access_log and type `yy` to copy.
+navigate to the line with error_log and type `p` to paste.
+
+4. Navigate to line #19. Delete it.
+- type `:19` to navigate to that line. Then type `dd` to delete.
+
+###### Difference between vi and vim
+-  They share the same core functionality, but vim has alot of additional features. vim(m-improved).
+###### Displaying the total number of lines:
+- press ctrl+g- to get the total number of lines.
+- To get absolute line number- `:set number` and press enter.
+- To turn them off, use `:set norelativenumber.`
+##### Editing a file:
+- i- Inserts text before the current cursor location
+- I- Inserts text at the beginning of the current line
+- a- Inserts text after the current cursor location
+- A- Inserts text at the end of the current line
+- o- Creates a new line for text entry below the cursor location
+- O- Creates a new line for text entry above the cursor location
+##### Deleting characters:
+- x- Deletes the character under the cursor location
+- X- Deletes the character before the cursor location
+- dw- Deletes from the current cursor location to the next word
+- d^- Deletes from the current cursor position to the beginning of the line
+- d$- Deletes from the current cursor position to the end of the line
+- D- Deletes from the cursor position to the end of the current line
+- dd- Deletes the line the cursor is on
+##### Change commands:
+- cc- Removes the contents of the line, leaving you in insert mode.	
+- cw- Changes the word the cursor is on from the cursor to the lowercase w end of the word.
+- r- Replaces the character under the cursor. vi returns to the command mode after the replacement is entered.
+- R- Overwrites multiple characters beginning with the character currently under the cursor. You must use Esc to stop the overwriting.
+- s- Replaces the current character with the character you type. Afterward, you are left in the insert mode.
+- S- Deletes the line the cursor is on and replaces it with the new text. After the new text is entered, vi remains in the insert mode.
+##### Word and character searching:
+- The / command searches forwards (downwards) in the file.
+
+- The ? command searches backwards (upwards) in the file.
+##### Replacing Text
+The substitution command (:s/) enables you to quickly replace words or groups of words within your files.  Following is the syntax to replace text −
+
+`:s/search/replace/g`
+
+**Note**
+
+1. You must be in command mode to use the commands. (Press Esc twice at any time to ensure that you are in command mode.)
+
+2. You must be careful with the commands. These are case-sensitive.
+
+3. You must be in insert mode to enter text.
+
+## Section 3: Use sed or perl only for Advanced Text Manipulation
+
+Please complete the Supplemental RegEx & vi - module before tackling this section. Avoid the -i flag unless you want the sed changes permanent. Some sed examples:
+1. Display all students with ID starting with 11..:
+
+`sed -n -E "s/(^11.*)/\1/gp" .test.student.csv`
+
+Explanation:
+
+- The **-n** flag will only display lines that get a match. All other output is suppressed
+- The **-E**  flag allows you to use Extended RegEx syntax.
+- The **s** char is stands for substitute.
+- The first two **/** (forward slashes) contain the text (or text matching a pattern) to be substituted.
+- The text in between the second **/** and the last one represents the replacement text.
+- The **g** char after the last \ means the search and replace should be global ie all occurrences will be replaced. Omitting this will only relace the first occurrence.
+- The **p** prints only lines with successful substitutions. 
+
+2. For students with ID starting with 22.. display only their ID, name and email addresses:
+
+`sed -n -E "s/(^22[0-9].*;)(.*;){4}(.*@.*)$/\1;\3/gp" .test.student.csv`
+
+-  s/(^22[0-9].*;)- ^ start of line to match id starting with 22 [0-9]to match the rest of the number .* multiple occurrence.; the semicolon seperating the id and the first name.
+-  (.*;){4}- matches any character(zero or multiple times followed by a semicolon). **{4}** matches that group 4times which will capture the: name, phone number, county number and the school number.
+-  (.*@.*)$- matches the email and end of line$.
+### Task
+1. Print out all students with ID starting with 33...
+
+`sed -n -E 's/(^33[0-9].*;)/\1/gp' .test.student.csv `
+```
+3300;Zora L Ratemo;0753-826-893;33;163;zlratemo@yahoo.com
+3301;Zora L Wambugu;0781-450-247;44;174;zlwambugu@gmail.com
+```
+2. Find all students from county #22 (Ensure that students from school #22 are not accidentally included unless they are from county #22) and display their phone numbers without the hyphen eg.:
+
+`sed -n -E 's/(^[0-9].*);([A-Za-z].*) ([A-Z]) ([A-Za-z].*);([0-9].*)(;22;)([0-9].*);(.*@.*)$/\1;\2 \3 \4;\5\6\7;\8/gp' .test.student.csv | tr -d '-'`
+```
+1086;Amber W Ratemo;0759920245;22;19;awratemo@email.com
+1454;Edward C Kamau;0703605803;22;205;eckamau@hotmail.com
+1479;Edward K Nuru;0757531359;22;46;eknuru@email.com
+1568;Elizabeth K Mwangi;0729988948;22;7;ekmwangi@email.com
+```
+- The **tr command** is used to delete or substitute(translate) characters. eg
+tr -d '-' deletes occurrences of hyphen(-).
+example : tr '-' ' '- substitutes the hyphen with spaces. 
+
+- You can also substitute the hyphens first:
+
+ `sed -n -E 's/-//g; s/(^[0-9].*);([A-Za-z].*) ([A-Z]) ([A-Za-z].*);([0-9].*)(;22;)([0-9].*);(.*@.*)$/\1;\2 \3 \4;\5\6\7;\8/gp' .test.student.csv`
+```
+1086;Amber W Ratemo;0759920245;22;19;awratemo@email.com
+1454;Edward C Kamau;0703605803;22;205;eckamau@hotmail.com
+1479;Edward K Nuru;0757531359;22;46;eknuru@email.com
+```
+
