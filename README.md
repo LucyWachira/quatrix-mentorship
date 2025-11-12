@@ -880,13 +880,15 @@ example : tr '-' ' '- substitutes the hyphen with spaces.
 ```
 ## Section 4: File Organization and Navigation
 
-1. Create four new directories inside .sampledata: A-F, G-L, M-R, and S-Z.
+**1. Create four new directories inside .sampledata: A-F, G-L, M-R, and S-Z.**
+
  - To create a directory use the `mkdir` command.
  - Navigate to .sampledata: /Documents/git/quatrix-mentor/.sampledata.
 
- `mkdir A-F G-L M-R S-Z`
+   `mkdir A-F G-L M-R S-Z`
 
-2. Move all student data files (.txt) whose first name starts with A, B, C, D, E, or F into the A-F directory.
+**2. Move all student data files (.txt) whose first name starts with A, B, C, D, E, or F into the A-F directory.**
+
 - To list all student data files with first names A,B,C,D,E,F:
 
   `ls *_[A-F]*_*_*.txt`
@@ -895,34 +897,36 @@ example : tr '-' ' '- substitutes the hyphen with spaces.
 
   `mv *_[A-F]*_*_*.txt A-F`
 
-3. Move all student data files (.txt) whose first name starts with G, H, I, J, K, or L into the G-L directory.
+**3. Move all student data files (.txt) whose first name starts with G, H, I, J, K, or L into the G-L directory.**
+
 
    `mv *_[G-L]*_*_*.txt G-L`
 
-4. Move all student data files (.txt) whose first name starts with M, N, O, P, Q, or R into the M-R directory.
+
+**4. Move all student data files (.txt) whose first name starts with M, N, O, P, Q, or R into the M-R directory.**
 
    `mv *_[M-R]*_*_*.txt M-R`
 
-5. Move all remaining student data files (.txt) into the S-Z directory.
+**5. Move all remaining student data files (.txt) into the S-Z directory.**
 
-   `mv *_[S-Z]*_*_*.txt S-Z`
+    `mv *_[S-Z]*_*_*.txt S-Z`
 
-6. Navigate into the A-F directory using a relative path from your current location (the main directory where generate_data.sh is).
+**6. Navigate into the A-F directory using a relative path from your current location (the main directory where generate_data.sh is).**
 
    `cd A-F `
 
-7. From inside the A-F directory, list all files in the S-Z directory using a relative path.
+**7. From inside the A-F directory, list all files in the S-Z directory using a relative path.**
 
     `ls ../S-Z`
 
-8. From your current location (still inside A-F), restore all student data files (.txt) from all the categorized directories back into the main .sampledata directory.
+**8. From your current location (still inside A-F), restore all student data files (.txt) from all the categorized directories back into the main .sampledata directory.**
 ```
 - To restore G-L: mv ../G-L/*.txt ..
 - To restore M-R: mv ../M-R/*.txt ..
 - To restore S-Z: mv ../S-Z/*.txt ..
 - To restore A-F: since we are already in the A-F directory, we move all the .txt files to the .sample data which is the parent directory: mv *.txt ..
 ```
-9. Search/list for files for students where the last name starts with A and scored seventy-something ie 7X e.g.. 1273_Beth_K_Atieno.txt
+**9. Search/list for files for students where the last name starts with A and scored seventy-something ie 7X e.g.. 1273_Beth_K_Atieno.txt**
 
 `find . -name "*_*_*_A*.txt" -exec grep -E ";7[0-9]+" {} +`
 ```
@@ -932,7 +936,7 @@ example : tr '-' ' '- substitutes the hyphen with spaces.
 ./1163_Ami_W_Atieno.txt:Agriculture;73.2947
 ```
 
-10. Search/list for files for students who have ...@gmail.com email addresses.
+**10. Search/list for files for students who have ...@gmail.com email addresses.**
 
  `find . -name "*.txt" -exec grep "@gmail.com" {} +`
  ```
@@ -941,48 +945,60 @@ example : tr '-' ' '- substitutes the hyphen with spaces.
 ./2970_Okello_W_Maxx.txt:Email: owmaxx@gmail.com
 ./1039_Amber_L_Idris.txt:Email: alidris@gmail.com
 ```
-11. Undo the restructuring of the files ie move the files from e.g. A-F,...,S-Z back to where they were before started part (c) ie where all the files were in one folder. After you're done moving, delete the empty folders.
+**11. Undo the restructuring of the files ie move the files from e.g. A-F,...,S-Z back to where they were before started part (c) ie where all the files were in one folder. After you're done moving, delete the empty folders.**
+
 `rmdir A-F G-L M-R S-Z`
 - rm dir -deletes empty folders only. Cannot delete if it contains files.
 - rm -r - removes recursively. Deletes files including all contents inside.
-12. Rename all files with Nate to be Nathan using: i) rename command and ii) using mv command and a bash loop of your choice and other commands you deem necessary.
+
+**12. Rename all files with Nate to be Nathan using: i) rename command and ii) using mv command and a bash loop of your choice and other commands you deem necessary.**
+
 1) Using the rename command:
 `rename 's/Nate/Nathan/' *.txt`
+
 2) Using the mv command and a bash loop:
 `for file in *Nate*.txt; do mv "$file" "${file/Nathan/Nate}"; done`
-13. Rename any occurrences of Nate to Nathan in all the *.txt files and in the .test.student.csv file as well
+
+**13. Rename any occurrences of Nate to Nathan in all the *.txt files and in the .test.student.csv file as well**
 
 1) To rename Nate to Nathan in .txt files:
 `rename 's/Nate/Nathan' *.txt`
+
 2) To rename Nate to Nathan inside the .txt files:
 `sed -i 's/Nate/Nathan/g' *.txt`
+
 3) To rename in the .test.student.csv:
 `sed -i 's/Nate/Nathan/g' .test.student.csv`
 
-14. Remove any files for students with the name Joan (and be careful NOT to remove those for Joanne). Remove these lines in the csv file as well.
-- To list all files with Joan: ls *Joan*.txt - this will also include Joanne.
+**14. Remove any files for students with the name Joan (and be careful NOT to remove those for Joanne). Remove these lines in the csv file as well.**
+
+- To list all files with Joan: 
+ls *Joan*.txt - this will also include Joanne.
+
 - To list only the Joan files : ls *Joan*.txt | grep -v "Joanne"
+
 - To remove the Joan files :
 `ls *Joan*.txt | grep -v "Joanne" | xargs rm`
 -  grep -v prints everything except Joanne.
 
-15. Navigation:
-Navigate to the G-L folder that's inside the .sampledata folder with one command.
+**15. Navigation:**
+
+i) Navigate to the G-L folder that's inside the .sampledata folder with one command.
 `cd .sampledata/G-L`
 
-Navigate to the root directory of the mentor repo with one command.
+ii) Navigate to the root directory of the mentor repo with one command.
 `cd ../../../../../../..` 
 
-Navigate to your home directory. Show at least two ways to do this.
+iii) Navigate to your home directory. Show at least two ways to do this.
 `cd`
 `cd ~`
 `cd $HOME`
 
-From your home directory (ie WITHOUT navigating away from your home directory):
+iv) From your home directory (ie WITHOUT navigating away from your home directory):
 List the files in the .sampledata folder.
 `ls Documents/git/quatrix-mentor/.sampledata`
 
-List the folder and sub-folder and files structure/hierarchy of the mentor folder using just one command.
+v) List the folder and sub-folder and files structure/hierarchy of the mentor folder using just one command.
 `tree Documents/git/quatrix-mentor/.sampledata`
 ree Documents/git/quatrix-mentor
 Documents/git/quatrix-mentor
@@ -991,22 +1007,25 @@ Levels: tree -L 1
 
 ## Section 5: Searching Data in .test.student.csv
 
-1. Display all lines from .test.student.csv where the phone number starts with 072.
+**1. Display all lines from .test.student.csv where the phone number starts with 072.**
 
-`grep -E "; 072[0-9\-]*;" .test.student.csv`
+      `grep -E "; 072[0-9\-]*;" .test.student.csv`
 
 - This will list phone numbers starting with 072
 -  ; - Start after a semicolon (field boundary)
 -  072 - Phone numbers beginning with 072
 -  [0-9\-]* -	Followed by any combination of digits and dashes
 -  ; - End of the field (next semicolon)
-2. Count how many students have an email address ending with @gmail.com in .test.student.csv.
-`grep -E "@gmail\.com" .test.student.csv | wc -l`
+
+**2. Count how many students have an email address ending with @gmail.com in .test.student.csv.**
+
+    `grep -E "@gmail\.com" .test.student.csv | wc -l`
 
 -  grep -E "@gmail\.com" .test.student.csv -this will display students with this email address.
 -  | wc -l - we will pipe the first command to (wc for word count). -l (counts only the number of lines).
 
-3. List the full names (second field) of all students from County ID 15 in .test.student.csv.
+
+**3. List the full names (second field) of all students from County ID 15 in .test.student.csv.**
 
 - **awk** command is used for pattern scanning and processing language, useful for data extraction and reporting.
 - Basic syntax:
@@ -1016,36 +1035,41 @@ Levels: tree -L 1
 -  condition	-Tells awk which lines to process (like a filter)
 -  { action }	What to do when the condition is true (e.g., print something)
 -  filename	-The input file to read
-- Solution:
-` awk -F";" '$4==15 {print$2}' .test.student.csv `
+
+      ###### Solution:
+    ` awk -F";" '$4==15 {print$2}' .test.student.csv `
+
 - -F";" - tells awk that my csv file uses ; to seperate fields.
 - $4==15 - the forth field is the countyid and we want to equate it to 15 because we want to search in county 15.
 - {print $2}- we want to print the full names which is in the second field.
 
-4. Find the student ID, full name, and email address for any student whose name contains "Otieno" (case-insensitive) in .test.student.csv.
-`awk -F";" '$2~/Otieno/ {print $1, $2, $6}' .test.student.csv `
+
+**4. Find the student ID, full name, and email address for any student whose name contains "Otieno" (case-insensitive) in .test.student.csv.**
+
+    `awk -F";" '$2~/Otieno/ {print $1, $2, $6}' .test.student.csv `
 - $2~/Otieno/ - the second field has three name so we cannot use the == to find any name otieno. This will match any line where the second field (full name) contains Otieno.
 - {print $1, $2, $6} - this will print $1-the student id field, $2- the fullname field with the name Otieno, $6- the email address field.
 -  The otput will be separated using spaces. But if i want to separate my output using ; i will add a **BEGIN {OFS=";"}**
 
-`awk -F";" 'BEGIN {OFS=";"}$2~/Otieno/ {print $1, $2, $6}' .test.student.csv`
+   `awk -F";" 'BEGIN {OFS=";"}$2~/Otieno/ {print $1, $2, $6}' .test.student.csv`
 
 -  BEGIN {OFS=";"} - output field separator makes awk use ; between the printed fields.
 
-5. Display the phone numbers of all students who attend School ID 50 in .test.student.csv.
-`awk -F";" '$5==50 {print $3}' .test.student.csv`
+**5. Display the phone numbers of all students who attend School ID 50 in .test.student.csv.**
+
+    `awk -F";" '$5==50 {print $3}' .test.student.csv`
 -  The school id is the fifth field so we will set the variable5 to be equals to 50 then we print the third field which is the phone numbers.
 
-6. Count the total number of students listed in .test.student.csv (excluding any header if it existed, but your script doesn't generate one).
+**6. Count the total number of students listed in .test.student.csv (excluding any header if it existed, but your script doesn't generate one).**
 
-`awk -F";" '{print $2}' .test.student.csv | wc -l`
+    `awk -F";" '{print $2}' .test.student.csv | wc -l`
 -  The students name is the second field so will print that then count how many lines.
 
-7. Find all unique domain names used in student email addresses from .test.student.csv.
+**7. Find all unique domain names used in student email addresses from .test.student.csv.**
 
-`awk -F";" '{print $6}' .test.student.csv | cut -d"@" -f2 | sort | uniq`
+    `awk -F";" '{print $6}' .test.student.csv | cut -d"@" -f2 | sort | uniq`
 
-- Solution:
+##### Solution:
 -  awk -F";" '{print $6}' .test.student.csv - this will print the sixth field for the email addresses.
 -  cut -d"@" -f2- since we want the domain names , this will split the email address at the **@** symbol, then pick the second field **-f2** for the domain names.
 -  sort - this sorts all the domain names alphabetically.
@@ -1061,4 +1085,88 @@ yahoo.com
     529 gmail.com
     617 hotmail.com
     562 yahoo.com
+```
+
+## Section 6: Automation with Bash Scripting
+
+**Bash script**- a text file containing a series of commands you could normally type in your terminal instead of runnimg commands one by one, you put them in a script.
+
+**1. Create a Bash script named organize_students.zsh that performs the file organization task from Section 3 (creating the A-F, G-L, M-R, S-Z directories and moving files into them). Make sure it's executable.**
+-   To create a bash script:
+```touch organize_students.zsh```
+- To edit the file :
+```vi organize_students.zsh```
+
+```
+#!/bin/bash
+
+# create folders
+mkdir A-F G-L M-R S-Z
+# To move the files.
+mv *_[A-F]*_*_*.txt A-F
+mv *_[G-L]*_*_*.txt G-L
+mv *_[M-R]*_*_*.txt M-R
+mv *_[S-Z]*_*_*.txt S-Z
+```
+
+- To make the file executable: 
+
+```chmod u+x organize_students.zsh```
+
+**2. Create a Bash script named find_072_phones.zsh that searches .test.student.csv for all phone numbers starting with 072 and outputs only those phone numbers to the terminal. Make it executable.**
+
+**touch find_072_phones.zsh**
+
+**vi find_072_phones.zsh**
+```
+#!/bin/bash
+# phone numbers starting with 072
+awk -F";" '$3~/^072/{print $3}' .test.student.csv
+```
+
+
+**3. Create a Bash script named county_student_count.zsh that takes a county ID as its first argument and outputs the number of students from that county in .test.student.csv.**
+
+```
+#!/bin/bash
+county_id="$1"
+awk -F";" '$4== '"$county_id" ' '.test.student.csv | wc -l
+```
+
+**4. Example usage: ./county_student_count.zsh 10**
+- To run the script:
+`./county_student_count.zsh 10`
+
+**5. Create a Bash script named restore_data.zsh that moves all student data files (.txt) from the categorized directories (A-F, G-L, etc.) back into the main .sampledata directory and then removes the empty categorized directories. Make it executable.**
+```
+#!/bin/bash
+
+#move files back
+mv ~/Documents/git/quatrix-mentor/.sampledata/A-F/*.txt ~/Documents/git/quatrix-mentor/.sampledata
+mv ~/Documents/git/quatrix-mentor/.sampledata/G-L/*.txt ~/Documents/git/quatrix-mentor/.sampledata
+mv ~/Documents/git/quatrix-mentor/.sampledata/M-R/*.txt ~/Documents/git/quatrix-mentor/.sampledata
+mv ~/Documents/git/quatrix-mentor/.sampledata/S-Z/*.txt ~/Documents/git/quatrix-mentor/.sampledata
+```
+- To remove the empty directories add:
+`rmdir A-F G-L M-R S-Z`
+
+**6. Create a Bash script named full_cleanup.zsh that runs the cleanup function from generate_data.sh and then also removes all .test.*.csv files. Make it executable.**
+
+```
+#!/bin/bash
+
+# source the generate_data.sh
+./util/generate_exam_data.sh
+
+# remove .test.*.csv
+rm .test.*.csv
+```
+- If you run this it will restore back the .test.*.csv files:
+```
+./util/generate_exam_data.sh 
+Generating Exam data. Please wait... 100%
+Populating Exam database. Please wait... 1%psql: error: connection to server on socket "/var/run/postgresql/.s.PGSQL.5432" failed: FATAL:  role "lwachira" does not exist
+Populating Exam database. Please wait... 100%
+Exam data generation and database population completed successfully.
+(see .generate_exam_data.log for details)
 ```
