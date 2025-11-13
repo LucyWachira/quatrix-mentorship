@@ -97,3 +97,55 @@ git diff --cached
 ```
 git pull
 ```
+- `merge`
+- `squash`
+- `log`
+- `fetch`
+- `reset`
+- `rm`
+- `mv`
+- `branch`
+- `remote`
+- `stash`
+- `rebase`
+### Questions
+1. What are alternatives to git for source code version control?
+2. What is the difference between git and GitHub/gitlab?
+- Git is a free and open source version control system. It is a version control system you install and use on your computer.
+  - Helps you to track changes of your code.
+  - Lets you to commit,branch and merge.
+  - stores your code and its full history locally.
+
+ - GitHub/GitLab/Bitbucket - these are hosting platforms for Git repositories. They run on the web.
+   - Stores your Git repositories online.
+   - Lets you collaborate with others : share code
+3. What does it mean to initialize a git repo? How does one initialize a repo on the command line and upload it to GitHub or GitLab? How does one initialize a repo on GitHub / GitLab? How does one then make changes to such a repo on their local PC?
+
+- To initialize a git repo- means transforming a regular directory on your local machine into a Git-managed project. To start tracking changes in your folder using git.
+- How to initialize a repo and upload it to GitHub:
+  - git init - initializes git
+  - git add . - adds files to track
+  - git commit -am "message" - commit the files
+- To upload it to Github:
+  - create the repo on Github
+  - Fill in the repository name
+  - Choose public or private
+  - Run those commands in your local terminal 
+  ```git remote add origin https://github.com/your-username/my-project.git
+   git branch -M main
+    git push -u origin main
+    ```
+  Now the local repo is linked to the remote Github repo.
+
+- To make changes on local pc:
+  - Make edits to the file
+  - git status - to check what has changed.
+  - git add . - to stage the changes.
+  - git commit -am "message" - to commit your changes.
+  - git push - pushes the changes to GitHub.
+
+ 4. What is a .gitignore file used for in a git repo? What do you recall about the characteristics of files that start with a dot(.) in bash? 
+ - .gitignore file -tells Git which files or folders it should ignore — meaning, don’t track or commit them.It only affects untracked files.
+If a file was already committed before you added it to .gitignore, Git will keep tracking it unless you remove it explicitly
+- In bash files that start with (.) are hidden files. They dont show up when you run ls, you have to use ls -a
+git status --ignored - shows all files including ignored ones.
