@@ -97,19 +97,37 @@ git diff --cached
 ```
 git pull
 ```
-- `merge`
-- `squash`
-- `log`
-- `fetch`
-- `reset`
-- `rm`
-- `mv`
-- `branch`
-- `remote`
-- `stash`
-- `rebase`
+- `merge` - Merging in Git means combining the changes from one branch into another.
+
+- `squash` - process of combining multiple commits into a single, more concise commit.
+git merge --squash feature-branch
+
+- `log` - The git log command displays the history of commits in a Git repository
+
+- `fetch` - used to download commits, files, and refs from a remote repository into your local repository. It updates your local repository with the latest changes from the remote, but it does not merge those changes into your current working branch.
+
+- `reset` -  is a powerful Git command used to undo changes in your local repository.
+
+- `rm` - used to remove files from a Git repository. It performs two key actions: 
+Removes the file from the working directory - This deletes the file from your local filesystem.
+Stages the deletion - It marks the removal of the file in the Git index (staging area), preparing this change to be included in the next commit.
+
+- `mv` - used to move or rename files, directories, or symlinks within a Git repository while preserving their history.
+
+- `branch` - used for managing branches within a repository
+
+- `remote` - used to manage connections to other repositories, known as "remotes." Remotes are essentially bookmarks or aliases for the URLs of other Git repositories, typically hosted on platforms like GitHub, GitLab, or a private server. These remotes facilitate collaboration by allowing developers to push and pull changes between their local repository and the shared remote repository.
+
+- `stash` - used to temporarily save changes in your working directory and index that are not yet ready to be committed. This allows you to revert your working directory to a clean state, typically matching the HEAD commit, so you can switch branches, pull updates, or perform other tasks without losing your current work in progress.
+
+- `rebase` - used to integrate changes from one branch into another by reapplying commits from the current branch on top of a target branch. Unlike git merge, which creates a new merge commit, git rebase rewrites the project history by creating new commits for each commit in the original branch, resulting in a cleaner, linear commit history. 
+
 ### Questions
 1. What are alternatives to git for source code version control?
+Centralized VCS (CVCS) — single central server (e.g. SVN, Perforce).
+
+Distributed VCS (DVCS) — each user has a full copy of the repository (e.g. Git, Mercurial).
+
 2. What is the difference between git and GitHub/gitlab?
 - Git is a free and open source version control system. It is a version control system you install and use on your computer.
   - Helps you to track changes of your code.
@@ -145,7 +163,27 @@ git pull
   - git push - pushes the changes to GitHub.
 
  4. What is a .gitignore file used for in a git repo? What do you recall about the characteristics of files that start with a dot(.) in bash? 
+
  - .gitignore file -tells Git which files or folders it should ignore — meaning, don’t track or commit them.It only affects untracked files.
 If a file was already committed before you added it to .gitignore, Git will keep tracking it unless you remove it explicitly
+
 - In bash files that start with (.) are hidden files. They dont show up when you run ls, you have to use ls -a
-git status --ignored - shows all files including ignored ones.
+git status --ignored - shows all files including ignored ones
+
+
+5. What is a conflict regarding version control systems? What are practices that help minimize conflicts? How can one resolve conflicts in a git repo?
+
+- A conflict occurs when two or more changes to the same file or lines in a file cannot be automatically merged by the VCS.Conflicts typically happen when multiple people edit the same part of a file concurrently.
+
+- To minimize conflicts:
+  Pull and update frequently
+  Work on separate branches
+  Break changes into small, manageable commits
+  Communicate with your team
+
+6. What are some basic Git and GitHub naming and documentation conventions? Does your quatrix-mentorship git repo adhere to these conventions?
+
+  -  Repo Naming- Lowercase letters, hyphens instead of spaces
+  - README - Every repo should have a README.md that explains:Project name and purpose.
+  - gitignore- Exclude files that shouldn’t be tracked (e.g., node_modules/, temporary files, logs).
+  - Commit messages — are they clear and follow a standard format,
