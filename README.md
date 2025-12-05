@@ -398,3 +398,90 @@ MiB Swap:    977.0 total,    977.0 free,      0.0 used.   3252.8 avail Mem
 - `top -o %MEM` - Sorts in memory usage.
 - `top -o %CPU` - Sorts in CPU time.
 
+**7. `Kill`** - used to send signals to processes for managing their execution. Signals e.g pause, continue, terminate.
+- importance:
+  - To stop misbehaving processes.
+  - To shut down services.
+  - To forcefully terminate unresponsive applications.
+  - To reload configuration files.
+  - To manage jobs and background tasks.
+
+- `Kill -l` - lists all signals.
+
+   1. `SIGTERM` - Signal number (`15`) this is the default signal, sent to allow it to terminate gracefully, allowing it to shut down properly.
+      - kill -SIGTERM <PID>
+      - kill -15 <PID>
+      - kill <PID>
+  2. `SIGKILL`- Signal number (`9`)used to force kill a stuck process.
+     - kill -9 <PID>
+     - kill -SIGKILL <PID>
+  3. `SIGSTOP` - Signal number (`19`) to pause a running process without terminating it.
+     - kill -STOP <PID> 
+  4. `SIGCONT` - Signal number (`18`) To resume a paused process.
+     - kill -CONT <PID>
+  5. `SIGHUP` - used to reload configuration files(hang up).
+  6. `SIGINT` - used to interrupt a process.
+  7. `SIGQUIT` - used to quit a process.
+
+
+**8. `pkill`** - stands for process kill, this is a way to kill processes by name or other attributes such as username or terminal.
+
+   E.g 
+   -  pkill firefox
+       -  pkill -9 firefox - it is used to force kill firefox.
+       -  pkill -u lwachira - kills all processes under the user lwachira
+       -  pkill -u lwachira firefox - kills firefox opened by user lwachira only.
+
+- Difference btwn pkill and kill : kill sends signals to processes by PID, pkill sends signals to processes by name or attribute.
+**9. `adduser`**- this creates the user, home directory and default settings.
+**10. `usermod`**- modifies an existing user account.
+
+**11. `ln`** - used to create links between files: hard links and soft links.
+  1. Hard link - its another name for the same file. It points to the same inode/actual data (data structure).
+  - The file size is the same, if the contents of any hard link the size of all hard link files are updated.
+  - A hard link is denoted by the same number of links (ls -l shows 2 links).
+  - Syntax: `ln source_file link_name`  example: `ln trial.txt trial_hardlink.txt`
+
+  2. Soft link - acts as a shortcut that points to the original file's path (filename).
+   - If the original file is deleted, the symlink breaks.
+   - Syntax: `ln -s original_file softlink_file` example: `ln -s trial.txt trial_softlink.txt`
+
+**12. `chmod`** - used to change the permissions of files/directories.
+ -  chmod g+w filename - adds write permission to the group.
+
+**13. `chown`** - used to change the owner/group of a file/directory.
+- To change owner : `sudo chown <new owner> <filename>  e.g sudo chown lwachira trial.txt. - to change the owner to lwachira.
+- To change group : `sudo chown :lwachira trial.txt` - to change the group to lwachira
+- To change both: `sudo chown lwachira:lwachira trial.txt`
+- To add a user to a group : `sudo usermod -aG name`
+- To check members in a certain group: `getent group lwachira`
+
+**14. `apt update`**- it refreshes the list of available updates.
+
+**15. `apt upgrade`** - installs the latest versions of all packages already installed.
+
+**16. `apt dist-upgrade`** - installs all available upgrades , updates installed packages to their latest versions.
+
+**17. `apt full-upgrade`** - updates all packages to the newest versios, installs new dependencies if needed, remove old packages.
+
+**18. `apt autoremove`** - removes packages that were automatically installed as dependencies and are no longer needed.
+
+**19. `ssh keygen`** - used to generate ssh key pairs, private and public keys. A secure way of authenticating to a remote server w/o using passwords.
+   To view the keys: `cat ~/.ssh`
+
+**20. `systemd`** - main program that starts when the computer boots. Controls the system start up, manages background services and ensures efficient system operation.
+
+**21. `service`**- is a program that runs in the background on your system, starts automatically when the computer boots.
+
+**22. `systemctl`** - is the tool used to control systemd.
+  - start a service : `sudo systemctl start start <service_name>`
+  - stop a service: `sudo systemctl stop <service_name>`
+  - restart a service: `sudo systemctl restart <service_name>`
+  - reload a service: `sudo systemctl reload <service_name>`
+  - To see the enabled services: `systemctl list-unit-files --type=service`
+  - To see all running services: `systemctl list-units --type=service --state=running`
+
+**23. `crontab`** - used for scheduling task. Cron is the background service that runs scheduled tasks.
+    - `crontab -l` -lists all your currentcron jobs.
+    - `crontab -e` -allows you to edit your cron jobs
+    - `crontab -u username -l` - lists cron jobs for that user.
