@@ -482,6 +482,52 @@ MiB Swap:    977.0 total,    977.0 free,      0.0 used.   3252.8 avail Mem
   - To see all running services: `systemctl list-units --type=service --state=running`
 
 **23. `crontab`** - used for scheduling task. Cron is the background service that runs scheduled tasks.
+
     - `crontab -l` -lists all your currentcron jobs.
     - `crontab -e` -allows you to edit your cron jobs
     - `crontab -u username -l` - lists cron jobs for that user.
+
+**24. `ufw`** - stands for ucomplicated firewall. Ufw controls which computers or programs can connect to your pc over the network. 
+  - Allow connections: `sudo ufw allow <service_name>` , you can allow connection via service_name, ip address, or port.
+   - Deny connection `sudo ufw deny <service_name>`
+   - When the ufw is enabled the firewall is turn on. firewall controls what data is allowed in and out of your system.
+   - Difference between an ip address and port - ip address tells the internet where the device is located while port tells the computer which service or program the data should go to.
+
+**25. `sudo`** - stands for super user do. Allows a normal user to run commands as the root(super user)
+
+**26. `su`** - lets you run a command as another user.`su - username`.
+   - Su asks for the username used password unlike sudo asks for your own password.
+   - You can run command `su -c "command" username`.
+  
+### Questions and Tasks
+
+1. What are the following folders typically used for: 
+ - / - this is the root of the filesystem hierachy, that contains all other directories.
+
+ - /etc - contains the configuration files for the OS and installed applications. E.g /etc/passwd contains user accounts, /etc/ssh contains the ssh server settings.
+
+ - /tmp - contains the temorary files created by users and applications, its contents are deleted upon reboot.
+
+ - /var - stores variable data files that are expected to change frequently during system operations. E.g /var/log for system logs
+
+ - /bin - contains commands required for basic system operations e.g ls, cat, 
+
+ - /sbin - contains programs mostly used for the root user to manage the system e.g reboot.
+
+ - /usr - contains user-related programs, libraries, documentation and shared files.
+
+ - /usr/local - contains programs and files installed manually by the system admin 
+ 
+ - /home - contains the personal directory for each user, where they store their personal files, documents etc
+
+ - /root - 
+/srv
+/opt
+/run,
+/mnt
+
+2. What's the most common difference in usage of /usr folder and /usr/local?
+
+3. What's the most common difference in usage of /bin folder, /usr/bin, /usr/sbin and /sbin?
+
+4. What is very important to note about the /tmp folder?
