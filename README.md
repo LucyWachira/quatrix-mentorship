@@ -498,7 +498,10 @@ MiB Swap:    977.0 total,    977.0 free,      0.0 used.   3252.8 avail Mem
 **26. `su`** - lets you run a command as another user.`su - username`.
    - Su asks for the username used password unlike sudo asks for your own password.
    - You can run command `su -c "command" username`.
-  
+
+**27. `rsyslog`** - collects system messages and writes them to the right log files so you can see what is happening on the system.
+It is the log manager.
+
 ### Questions and Tasks
 
 1. What are the following folders typically used for: 
@@ -517,17 +520,79 @@ MiB Swap:    977.0 total,    977.0 free,      0.0 used.   3252.8 avail Mem
  - /usr - contains user-related programs, libraries, documentation and shared files.
 
  - /usr/local - contains programs and files installed manually by the system admin 
- 
+
  - /home - contains the personal directory for each user, where they store their personal files, documents etc
 
- - /root - 
-/srv
-/opt
-/run,
-/mnt
+ - /root - home directory of the root user.
 
-2. What's the most common difference in usage of /usr folder and /usr/local?
+ - /srv - contains files for servers like web or FTP.
 
-3. What's the most common difference in usage of /bin folder, /usr/bin, /usr/sbin and /sbin?
+ - /opt - reserved for installation of optional, third party software packages.
 
-4. What is very important to note about the /tmp folder?
+ - /run - contains temporary runtime information like process IDs.
+
+ - /mnt - contains empty directories used to mount external drives, network shares, or partitions.
+
+a. What's the most common difference in usage of /usr folder and /usr/local?
+  - /usr - contains software installed by the OS E.g apt install
+  - /usr/local -contains software installed manually.
+
+b. What's the most common difference in usage of /bin folder, /usr/bin, /usr/sbin and /sbin?
+  - /bin - contains the essential user commands.
+  - /usr/bin - contains all regular apps installed by the system
+  - /usr/sbin - contains system admin programs installed by the system.
+  - /sbin - contains essential system admin commands needed for booting and repairing system.
+  
+c. What is very important to note about the /tmp folder?
+  - It is a temporary folder to store files needed only for a short time. 
+  - The files can be deleted automatically on reboot.
+
+2. What is the command sudo used for? What is the root user in Linux?
+ - Sudo stands for super user do. It allows a normal user to run commands with administrative privileges.
+  - Root user is the super user, has all the administrative privileges.
+
+ 3. What does the command su do? su command lets you run commmands as another user e.g su - gwekesa
+
+ 4. Installation of applications in Debian:
+How do you install applications on the command line? Install the following applications: gedit, kwrite, vim, rsyslog, xfce4-terminal and Google Chrome.  - using sudo apt update, sudo apt install<package_name>
+
+ How does one uninstall an application? - sudo apt remove <package_name> to remove the cofiguration files completely sudo apt purge
+
+ 5. What is a Desktop Environment? Install the following Desktop Environments: KDE Plasma, Cinnamon, Xfce.- Desktop environment is the graphical interface you use to interact with once you log in. To check the DE you are currently using: echo $XDG_CURRENT_DESKTOP.
+
+9. What is a sources.list file in Debian? What are the key components on each line in this file? What do the different lines represent? What is the sources.list.d folder useful for? - sorce list file is the main APT repository file, it tells the package manager where to look for software packages and updates.
+ - components: 1. Type : deb - are ready to install software. deb-src - contains the source code packages.
+2.Repository URL -where the system will fetch the packages from .
+3.Distribution/release name - tells apt which version of packages to download e.g bookworm -Debian 12, trixie -Debin 13
+4.Components/sections -main contains free software, non -free -firmware a section of firmware that is not free.
+
+
+10. Free Memory & Disk space:
+  - How can one check free and used memory (RAM) on a Linux PC? What is the status of memory of your Linux PC right now? - using free -h command or the top command to have a live preview.
+
+  - How much used disk space do you have on your Linux PC? - using df -h command 
+
+  - For the above two tasks, how can you view this information in Gigabytes as opposed to plain bytes? -
+    df -BG to have in GB 
+
+11. How does one update and upgrade a Debian Linux PC? What are the different options of updating and upgrading? Update and upgrade your PC by simply executing the commands (NB: Do NOT edit or alter any source files for this task)
+   - using the sudo apt update - this refreshes the package list to know which packages have the latest versions.
+   - sudo apt upgrade - this installs the latest version of all currently installed packages.
+   - sudo apt full-upgrade - upgrades packages including dependacies.
+
+12. Relevant questions:
+ - What is nginx?  - is a web server, a program that listens for requests from browsers and sends back websites or data.
+
+ - Why is the purpose of the folder you created under /var/www...? - its called the web root folder, where you put your website files.
+
+ - What do the two folders sites-enabled and sites-available help accomplish? - sites-available stores all the nginx server block. it's like a library of all possible websites you want to serve. Files here are not automatically active, Nginx wont automatically serve them until you enable them. Sites-enabled this folder contains symbolic links (shortcuts) to the files in the sites-available.
+
+ - What is a symlink? - its like a shortcut or pointer to another file.
+
+ - What is the hosts file used for? Name at least 2 uses. - host file is a local file that maps hostname to ip address.
+
+ - What is the difference between service and systemctl? -systemctl is a tool used to control systemd used to start,stop,restart,reload a service. service is an older method to run basic commands like start, stop, restart a service.
+
+ - What is the difference between restart and reload with the context of a service? restart a service stops the service completely then starts it again. reload tells the service to re-read its configuration files without stopping the entire service.
+
+ - If we edit the index.html and add some content, do we need to restart, reload anything or do something else to view the changes.  - just save the changes then on the browser refresh it.
