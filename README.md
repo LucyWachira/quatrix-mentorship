@@ -596,3 +596,14 @@ How do you install applications on the command line? Install the following appli
  - What is the difference between restart and reload with the context of a service? restart a service stops the service completely then starts it again. reload tells the service to re-read its configuration files without stopping the entire service.
 
  - If we edit the index.html and add some content, do we need to restart, reload anything or do something else to view the changes.  - just save the changes then on the browser refresh it.
+
+13. postgres - (On your local PC):
+ - Install latest Postgres version supported by Debian (or Fedora). - postgresql is a database server, example is if your application needs to remember users, passwords, products, orders, logs etc , it uses a database.
+    - postgresql is a Relational Database Management Service (RDBMS) -this means it stores data in tables.
+
+ - Explain the following:
+   -  The purpose of pg_hba.conf file. Where is it located? -pg_hba stands for postgresql host-based authentication, this is the main security file that decides who is allowed to connect to postgresql and how they must prove their identity.
+     - location: `/etc/postgresql/17/main/pg_hba.conf`
+
+   - Where are postgresql database server logs located? `/var/log/postgresql`
+   - How many types of authentication methods does postgresql offer?
