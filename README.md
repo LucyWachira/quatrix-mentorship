@@ -600,10 +600,156 @@ How do you install applications on the command line? Install the following appli
 13. postgres - (On your local PC):
  - Install latest Postgres version supported by Debian (or Fedora). - postgresql is a database server, example is if your application needs to remember users, passwords, products, orders, logs etc , it uses a database.
     - postgresql is a Relational Database Management Service (RDBMS) -this means it stores data in tables.
+    - `systemctl status postgres` - checks if it is active. To view the version installed `ls /etc/postgresql`
 
  - Explain the following:
    -  The purpose of pg_hba.conf file. Where is it located? -pg_hba stands for postgresql host-based authentication, this is the main security file that decides who is allowed to connect to postgresql and how they must prove their identity.
-     - location: `/etc/postgresql/17/main/pg_hba.conf`
+     - location: `ls /etc/postgresql/17/main/pg_hba.conf`
 
-   - Where are postgresql database server logs located? `/var/log/postgresql`
-   - How many types of authentication methods does postgresql offer?
+   - Where are postgresql database server logs located? `ls /var/log/postgresql`
+- How many types of authentication methods does postgresql offer?
+
+   1. Trust Authentication - this method allows anyone to connect without a password.
+
+
+   2. Password-based Authentication
+
+      (i) MD5 - stands for message -Digest Algorithm 5.
+     Purpose: It’s a hash function — a way to turn any input (like a password) into a fixed-length string of letters and numbers.
+
+      (ii) Scram-SHA-256 (Modern)
+
+       - How it works: Uses SCRAM (Salted Challenge Response Authentication Mechanism) with SHA-256.
+
+       - Pros: More secure than MD5, passwords are salted, hashed, and never sent in plain text.
+
+       - Cons: Slightly more complex setup.
+
+
+     (iii) Plain - sends the password in plain text over the network.
+
+   3. GSSAPI (Kerberos)
+    - Uses Kerberos tickets for authentication. It is a digital ID badge that proves who you are.
+
+     - How it works: PostgreSQL relies on the Kerberos protocol to verify your identity.
+
+   4. Peer
+    - Peer Authentication checks your system username, if your linux username matches a postgresql user, you can log in without a password.
+    - Example: You are logged into Linux as user lucy PostgreSQL checks: is there a PostgreSQL user also called lucy? If yes → you can connect without a password.
+    - Works only on local connections (your own machine).
+  
+   5. Ident authentication
+   - Similar to peer, but used over TCP/IP. It asks an Ident server what system user is connecting and checks it against PostgreSQL users.
+   - You try to connect from another computer, PostgreSQL asks the Ident server on your computer:Who is this user?” The server returns a system username. PostgreSQL checks if that matches a DB user.
+
+   6. Certificate (SSL)
+   - Uses client SSL certificates to identify users. Used in High-security setups over networks, often combined with other methods.
+   - Example:You prove who you are with a digital ID card.The client has a special certificate file,like an official ID. PostgreSQL checks the certificate to see who you are. If the certificate is valid → you can connect. No password is needed.
+   - It is often combined with encrypted connections to protect data.
+
+  14. ufw - (On your local PC):
+ - Install ufw
+ - To uninstall:
+   - `sudo ufw disable` - to stop the firewall.
+   - `sudo ufw status`- the status was:Status: inactive
+   - `sudo apt purge ufw` - to uninstall
+   - `sudo apt autoremove` - to remove dependencies.
+ - To install:
+   - `sudo apt update`
+   - `sudo apt install ufw`
+   - `sudo ufw status `
+
+ - Ensure that SSH, HTTP and HTTPS ports are accessible and NO others.
+   - `sudo ufw allow ssh` - ssh
+  - `sudo ufw allow 80` - http
+  - `sudo ufw allow 443` - https
+
+ - Enable ufw
+  - `sudo ufw enable`
+Firewall is active and enabled on system startup
+
+ 6. Server access - For the next section, you will require access to one of Quatrix's server test.traccar.quatrixglobal.com. Provide the system admin with your ssh public key only. Do not share anything else other than the public key. After server system admin gives you access to the server, login / ssh into it as follows:
+   `ssh lwachira@test.traccar.quatrixglobal.com`
+
+8. Create a user account for a user called Mary Doe and the account username should mdoe.
+  - `sudo adduser mdoe`
+  - `sudo usermod -aG sudo mdoe`
+
+After creating the account, make jdoe a sudoer.
+Generate a pair of ssh keys for her using the ecdsa protocol.
+ -  `su -mdoe` - to switch to mdoe user
+ - `ssh-keygen -t ecdsa` - to generate the public and the private keys
+ - `ls ~/.ssh` - to view the public and the private keys.
+
+Allow jdoe to access test.traccar.quatrixglobal.com server.
+  1. copy mdoe public key: switch user to mdoe - `su -mdoe`  view the public key and copy it `cat ~/.ssh/id_ecdsa.pub` copy the key.
+ 2. `ssh lwachira@test.traccar.quatrixglobal.com` then switch to mdoe `su - mdoe`
+ 3. inside mdoe@test make a directory for ssh: `mkdir -p ~/.ssh`  then create the authorized_keys file `touch authorized_keys`
+ 4. paste the copied public key inside the authorized_keys file: `vi authorized_keys` paste and save.
+ 5. exit back then as user mdoe `su -mdoe` try to ssh: `mdoe@test.traccar.quatrixglobal.com`
+
+ - Login as Jane Doe using the Xfce Desktop Environment as that's her preference. Ensure:
+Her favorite browser (Firefox and Chrome), editor, gedit and Screenshot applications are available on the bottom app launch panel
+ - Install the xfce4-terminal and set the background to Transparent backgroundand Opacity to 0.50. Add a shortcut to start xfce4-terminal to the bottom app launch panel.
+   - To install: `sudo apt install xfce4 -terminal`
+
+   - log out and log in as mdoe, in the login interface select the xfce desktop environment. To set the background and opacity: go to Edit -> appearance.
+
+   - Install oh-my-zsh for her to use on the terminal.
+   `sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"`
+     - Check that Zsh is installed and working: `zsh --version`
+
+
+   - Apply the powerlevel9k theme to oh-my-zsh installation.
+
+     - Download and Install MesloLGS Nerd Font - Powerlevel9k requires a Nerd Font.
+      - Download from Nerd Fonts (MesloLGS NF).
+      - Install the fonts: cd Downloads, unzip the font: `uzip Meslo.zip` create fonts folder: `mkdir -p ~/.fonts` copy the font files: `cp *.ttf ~/.fonts/` refresh the font cache: `fc-cache -fv`
+      - Verify installation: `fc-list | grep -i meslo`
+
+      - Configure Terminal to Use the Nerd Font: 
+         - Open Terminal → Preferences
+         - Go to Appearance
+         - Disable Use system font
+         - Select:**MesloLGS Nerd Font Mono Regular**
+         - Close and reopen the terminal.
+
+      - Install Powerlevel9k Theme - Clone the theme into Oh My Zsh custom themes directory: `git clone https://github.com/bhilburn/powerlevel9k.git \~/.oh-my-zsh/custom/themes/powerlevel9k`
+
+      - Enable Powerlevel9k Theme -Edit the Zsh configuration file: `vi ~/.zshrc` 
+      - Find the line:ZSH_THEME="robbyrussell" Change it to: `ZSH_THEME="powerlevel9k/powerlevel9k"`   Save and exit vi
+     - . Apply the Configuration -Reload Zsh configuration: `source ~/.zshrc`
+
+
+   - Test oh-my-zsh by typing several commands and re-invoking them using a combination of tabspace or up-arrow keys to ensure it works as expected.
+      - You can see things like:-It uses icons and symbols (Nerd Font support)
+       - Username & hostname 
+       - Current directory
+       - Last command success/failure
+       - Execution time (optional)
+
+
+   - Logout, a login as yourself and remember to pick your preferred Desktop Environment.
+
+   - Check the system logs and try and locate the login time for user jdoe. Capture the line showing the login action, as well as the 3 lines preceding and after that action.
+    
+   
+    ``` sudo cat /var/log/auth.log```
+    
+     ```sudo grep "session opened for user mdoe" /var/log/auth.log```
+
+   - Your supervisor has now informed you that Jane Doe is leaving the organization. Your supervisor insists that Jane Doe's account be deleted including her home directory on the local machine. On the test.traccar server, her home user account directory should be preserved, but she should no longer be able to ssh into the server.
+
+   - On the Local Machine — Delete Jane Doe completely:
+       `sudo deluser --remove-home jdoe`  replace jdoe with mdoe(the user you created)
+       - yoy can verify: `ls /home/`
+
+    
+   - Remote Server — Preserve home but disable login:
+
+     - First Connect to server:  `ssh lwachira@test.traccar.quatrixglobal.com`
+     - Step 2: Lock Jane Doe’s account: `sudo usermod -L jdoe`
+     - Step 3: Verify account is locked: `sudo passwd -S jdoe`
+
+   - Jane Doe’s home folder /home/jdoe is preserved, so files remain accessible to admins.
+
