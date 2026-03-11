@@ -187,3 +187,88 @@ git status --ignored - shows all files including ignored ones
   - README - Every repo should have a README.md that explains:Project name and purpose.
   - gitignore- Exclude files that shouldn’t be tracked (e.g., node_modules/, temporary files, logs).
   - Commit messages — are they clear and follow a standard format,
+
+  **REVISION**
+ 1. `git clone git@github.com:<user_name>/the-repo-you-are-cloning.git` - Clones your remote origin repo locally
+
+ 2. `git fetch upstream` - Pulls in the remote changes not present in your local repo. Downloads objects and references from another repository.
+ 3. `git merge upstream/master` - Merges any changes fetched into your working files
+ 4. `git add <file>` -Start tracking new files and also stage changes to already tracked files
+ 5. `git status & git diff` - Tells us what files and assets have been modified and staged git status -s This will display what files have been removed, changed or modified.
+(M) - modified
+(A) - added
+(AM) - file has not been altered since it was last added
+
+6. `git commit -m 'the message goes here for the commit'`- Records a snapshot of the project into your history at the time of your commit.
+7. `git add '*.<file_extension>'`- This command adds all file types with the same extension, especially from different directories. Without quotes the command will only execute within the same directory it's been called from.
+8. `git rm --cached <file>`- Unstages a file from the working tree (i.e. stops tracking the file).
+9. `git log`- Remembers all the changes we've committed so far, in the order we committed them.
+10. `git log --summary`- See where new files were added for the first time or where files were deleted.
+11. `git remote add origin git@github.com:<user_name>/<repo_name>.git` - Creates a brand new remote repository.
+12. `git remote -v`- Show a list of the current remote repositories
+13. `git reset <file>`- Removes the desired file from staging area.
+14. `git branch -r`- List all the remote branches currently tracked
+15. `git remote prune origin`- Deletes branch locally if it has been removed remotely. Helps to remove stale references.
+16. `git checkout -- <target>`- Changes the desired target back to the state of the last commit. A target can be a file or a directory (for example).
+git rebase
+Rebase allows you to easily change a series of commits, reordering, editing, or squashing commits together into a single commit.
+
+### Adding
+1. git add <list of files> git add --all - Add all the new files since last
+2. `git add *.txt `-Add all txt files in directory
+
+### Staging
+1. `git diff` - Show unstaged differences since last commit
+2. `git diff --staged` - Gets the staged differences and displays what has changed since our last commit
+
+### Reverting
+1. `git reset HEAD <file>`- Head is the last commit on the current branch we are on. What if you stage something you didn't need to be staged? This is the key.
+
+git checkout -- <file>
+Reset all changes to a file since last commit
+
+git reset --soft HEAD^
+What if you regret a commit? This will undo your last commit. (^ means move commit before HEAD and puts changes into staging).
+
+git reset --hard HEAD^
+Traverse through commits and revert back one by one.
+
+git reset --hard HEAD
+Undo Last commit and all changes
+
+git commit --amend -m "added another file to the commit'
+New commit message will override previous commit message
+
+### Remotes
+1. `git remote -v`- Show the current remote repos
+2. `git remote add <name> <address>`- Add a new remote repo
+
+3. `git remote rm <name>` - Remove remote repo
+
+### Cloning, Branching, Fetching & Merging
+1. `git fetch` -Pulls down any changes but doesn't merge them
+2. `git branch <branch name>` - Makes a new branch
+3. `git checkout <branch name>` - Switching branch and on a different timeline
+4. `git merge <branch>`- Merges branch into master
+5. `git branch -d <branch name>`- Deletes branch
+6. `git checkout -b <branch name>`- Creates a new branch and then switches to it
+
+### Pushing & Pulling
+1. `git push -u origin master (remote repo name[origin], local branch name[master])`- Lets you just run git push later on without specifying name and branch
+2. `git pull` -Pull changes in and syncs up your repo. Doesn't update local code
+3. `git branch -r`- List all remote branches
+4. `git remote show origin` - Show all the remote branches
+5. `git branch -D <branch name>` -Delete the local repo branch and if you don't want the commits any longer on it then delete them too.
+6. `git remote prune origin` - Deletes the branch locally if it has been removed remotely. Helps to remove stale references.
+7. `git rebase` -Move all changes to master local which are not in origin/master remote to a temporary area
+8. `git log`- Viewing the commits history
+9. `git config --global color.ui true`- Color codes the commit SHA
+10. `git log --pretty=oneline` OR `git log --pretty=oneline` Commit and history is one line
+11. git log --pretty=format:"%h
+Exactly how you want the output using placeholders (use git help log)
+
+git log --until <value>
+Date Ranges. For example you could grab everything from the year 2013 using git log --until 2013
+12. `git rm <filename>` - Removes file completely
+13. `git rm --cached <file names>`- Won't be deleted from your file system, but keeps the local changes still.
+14. `git help` `git help <command>` - for help
