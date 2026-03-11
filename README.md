@@ -375,5 +375,27 @@ echo "Backup completed. Files saved in $BACKUP_DIR"
 
 - Check the logs to ensure there are no issues. Share a command and filter that would help you identify only the WARN - ie WARNING messages in the traccar logs.
   - `sudo tail /opt/traccar-new/logs/tracker-server.log`
-  
+
   - Only filter WARN: `sudo tail /opt/traccar-new/logs/tracker-server.log | grep "WARN"`
+
+- Create a bash script to filter based on device, days or hours
+  - sudo vi filter_traccar.sh
+  - chmod +x filter_traccar.sh
+
+  - sudo cat filter_traccar.sh:
+  ```
+  #!/bin/bash
+
+  DEVICE=$1
+  DATE=$2
+  HOUR=$3
+  LOG_FILE="/opt/traccar-new/logs/tracker-server.log"
+
+  grep "$DEVICE" "$LOG_FILE" | grep "$DATE" | grep "$HOUR"
+  ```
+- To run the script: 
+  - sudo ./filter_traccar.sh 353701094224777
+  - sudo ./filter_traccar.sh 2026-03-02
+  - sudo ./filter_traccar.sh 2026-03-02 10:
+
+
