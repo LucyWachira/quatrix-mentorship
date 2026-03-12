@@ -272,3 +272,18 @@ Date Ranges. For example you could grab everything from the year 2013 using git 
 12. `git rm <filename>` - Removes file completely
 13. `git rm --cached <file names>`- Won't be deleted from your file system, but keeps the local changes still.
 14. `git help` `git help <command>` - for help
+
+
+
+- The valid merge strategies from your list are 1. Fast-forward and 2. Recursive. 
+Fast-forward: This occurs when there is a linear path from the current branch tip to the target branch. Git simply moves the branch pointer forward instead of creating a new merge commit.
+Recursive: This is the default strategy when merging one branch that has diverged from your current branch. It uses a 3-way merge algorithm to combine changes and creates a new merge commit. 
+GeeksforGeeks
+GeeksforGeeks
+ +4
+- Other Official Git Strategies:
+If you are diving deeper into Git, you might also encounter these official strategies:
+ORT: The modern replacement for the recursive strategy (stands for "Ostensibly Recursive's Twin").
+Octopus: Used when merging more than two branches at once.
+Ours: Merges any number of heads but ignores all changes from the other branches, keeping only the current branch's code.
+Subtree: Used for merging a project into a subdirectory of another project.
