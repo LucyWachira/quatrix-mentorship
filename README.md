@@ -1170,3 +1170,113 @@ Populating Exam database. Please wait... 100%
 Exam data generation and database population completed successfully.
 (see .generate_exam_data.log for details)
 ```
+
+
+### BASH REVISION
+1. To list all files in the current directory that have a `.bak` extension, you would use `ls __`.ls *.bak. 
+2. To download a file from `http://example.com/software.zip` and save it with the same name in the current directory, you would use `wget ___`.wget http://example.com/software.zip. 
+3. Which mv command would move a directory old_folder and all its contents to new_location?mv old_folder new_location/.
+4. `rm -d` -To remove an empty directory
+5. When using the cp command, which option would you use to confirm with the user before overwriting an existing file? `cp -i document.odt report.odt`
+6. To search for lines containing "permission denied" (case-sensitive) in `syslog` and display the 2 lines before and 2 lines after each match, you would use `grep -C 2 "permission denied" ___`.grep -C 2 "permission denied" syslog.
+- -B 2: Only shows the 2 lines Before (above) the match.
+-A 2: Only shows the 2 lines After (below) the match
+7. To copy all files from the current directory that start with 'report' and end with '.txt' to a `backups` directory, you would use `cp ___ backups/`  o copy those specific files, you would use cp report*.txt backups/.
+8. To search for files named `backup.sql` within the `/var/backups` directory, you would use `find /var/backups -name ___`.  find /var/backups -name "backup.sql"
+9. To download a file named `document.pdf` from `http://example.com/files/document.pdf` and save it as `report.pdf` in the current directory, you would use `wget -O report.pdf ___`.wget -O report.pdf http://example.com/files/document.pdf.
+- he -O (uppercase O) flag stands for Output document and allows you to specify a custom filename for the saved data. Be careful, as using a lowercase -o instead will redirect the download logs to a file rather than saving the actual document!
+10. To find all commands involving ssh from your history, you would use:
+history | grep ssh
+11. To list all files in the current directory that are regular files (not directories) and end with `.txt`, you could use `ls -p | grep -v / | grep ___`.To list those specific files, you would use ls -p | grep -v / | grep "\.txt$".
+- ls -p: Lists files and adds a trailing slash (/) to the end of any entry that is a directory.
+grep -v /: Uses the "invert-match" flag (-v) to exclude any line containing a slash, effectively filtering out all directories.
+grep "\.txt$": Searches for lines ending in .txt. Using the dollar sign ($) ensures it only matches files where the extension is at the very end of the name.
+12. To remove the file without a prompt, you would use `rm -f old_archive.zip.`
+- `rm -i old_archive.zip`- To prompt for confirmation before deleting, you would use the -i (interactive) flag.
+13. To extract a tar archive named `my_archive.tar.gz` that was compressed with `gzip` and extract it to a specific directory `/opt/my_archive`, you would use `tar -xzf my_archive.tar.gz -C ___`.
+- tar -xzf my_archive.tar.gz -C /opt/my_archive.
+   - -x: Extract the files.
+   -z: Uncompress the archive using gzip.
+   -f: Specifies the filename of the archive.
+  -C: Changes the directory to the specified path before performing the extraction. 
+  14. Which ls command would sort files by their modification time, with the newest files listed first?
+     - -t
+     - ls -r: This stands for reverse. On its own, it sorts files in reverse alphabetical order. However, it is often combined with -t (ls -tr) to show the oldest files at the top and the newest at the bottom (which is helpful for long lists).
+     - ls -m: This lists files separated by commas across the screen rather than in columns or a list.
+     - ls -s: This displays the size of each file (in blocks) next to the filename.
+15. To list all files in the current directory that end with `.conf`, you would use `ls ___
+To list those files, you would use ls *.conf.
+16. To list all files in the current directory that end with `.conf`, you would use `ls ___
+To list those files, you would use ls *.conf.
+  - -x: Tells tar to extract the contents. [1, 2, 4]
+  - -J: Specifies that the archive was compressed using xz. [1, 2, 5]
+  - -f: Allows you to specify the filename of the archive. [1, 2, 4]
+17. To make an alias persistent across shell sessions, it must be added to a shell configuration file, such as `___` for Bash.- ` .bashrc `
+18. You want to download a file, but if a partially downloaded file already exists, wget should resume the download from where it left off. Which option achieves this?
+  - -c: This is the "continue" flag. If you are downloading a large file and the connection drops, running the same command with -c tells wget to check the size of the existing local file and start downloading only the remaining bytes from the server.
+  - -b: This stands for background. It starts the download and immediately moves it to the background so you can continue using your terminal.
+  - -r: This stands for recursive. It is used to download an entire website or directory structure, following links to find more files.
+  - -O: This is for Output document. It allows you to specify a custom filename for the download, but it does not handle resuming.
+
+19. Which ls command uses pipes and RegEx to list only files (not directories) whose names end with ~ (indicating a backup file)? - `ls -l | grep -E "^-.*~$". `
+  - ^: Matches the start of the line.
+  - -: In the first column of ls -l output, a hyphen indicates a regular file. (A d would indicate a directory).
+  - .*: Matches any characters in the middle (the permissions, owner, size, and date).
+  - ~$: Matches the tilde character at the very end of the line (the filename).
+20. To delete those lines, you would use `sed '5,10d' document.txt.`
+21. **Navigation keys in man:**
+  - Spacebar: Scrolls down by one full window/page.
+  - b: Scrolls back up by one full window/page.
+  - Enter / Down Arrow: Scrolls down by one line at a time.
+  - y / Up Arrow: Scrolls up by one line at a time.
+  - G (Shift+g): This is the standard "jump to end" command in the less pager (which man uses).
+  - End key: On most modern keyboards and terminal emulators, this will also take you directly to the bottom of the document.
+  - g (lowercase): Takes you back to the very beginning (top) of the document.
+  - 1G: Also takes you to the very first line
+22. To create the archive, you would use tar -czf archive.tar.gz my_data.
+ - -c: Create a new archive.
+ - -z ompress the archive using gzip.
+ - -f: Specifies the filename of the archive (this must come immediately before the filename).
+ - my_data: The source directory or files you want to pack inside.
+- If you want to see the progress of the files being added as the command runs, add the -v (verbose) flag: tar -cvzf archive.tar.gz my_data.
+23. To create a directory new_dir and set its permissions to rwx for the owner, and read-only for others, you would use mkdir -m ___ new_dir.- `mkdir -m 744`
+  - Permissions are calculated by adding values for Read (4), Write (2), and Execute (1): 
+  Owner (rwx): 
+  Group (r--): 
+  Others (r--): 
+
+24. The path to your user's home directory - `echo $HOME`
+-  rename a file document.pdf to archive/document.pdf (moving it into the archive directory)?- `mv document.pdf archive/ and mv document.pdf archive/document.pdf`
+- cat vs less: Unlike cat, less does not read the entire file before starting. it loads it piece by piece, making it incredibly fast for opening multi-gigabyte log files.
+Navigation: It allows you to scroll both forward and backward easily using the arrow keys or page keys.
+- Which grep commands use regular expressions to find lines containing "warning" or "error" in system.log
+  - `grep -E "warning|error" system.log and grep "warning\|error" system.log.`
+  - grep -E: This flag enables Extended Regular Expressions (ERE). In ERE, the pipe symbol (|) acts as a logical "OR" operator without needing extra backslashes.
+  - grep "warning\|error": This uses Basic Regular Expressions (BRE). In this mode, you must "escape" the pipe with a backslash (\|) for it to be treated as an "OR" operator instead of a literal character.
+- sed '1i--- Start of Log ---' log.txt. 
+  - 1: Specifies the line number where the action should occur (the first line).
+  - i: The insert command, which places the specified text before the selected line.
+  - No -i flag: Without the -i (in-place) flag, sed will print the modified version to your terminal (standard output) while leaving the original file unchanged. 
+- To move all files in the current directory whose names contain exactly five characters to a new directory called short_names, which command would you use? -`mv ????? short_names/`
+- Which of the following `ssh` commands would connect to `remote_host` and prevent the execution of commands on the remote system after authentication (useful for port forwarding only)? - `ssh -N remote_host`
+  - -N (No command): This flag tells SSH not to execute a remote command. This means that after you authenticate, you will not get a shell prompt, and no commands will be run on the server.
+  - Port Forwarding Use Case: This is specifically useful when you only want to use the connection for tunnelling or port forwarding (e.g., with -L, -R, or -D flags).
+- To display the content of `long_file.txt` page by page, you would use `cat long_file.txt | ___` - cat long_file.txt | less.
+- `ls report*`: Finds files that start with "report" (e.g., report_v1.txt).
+  - `ls *report`: Finds files that end with "report" (e.g., final_report).
+  - `ls -i *report*`: (If using grep) Use ls | grep -i report if you want to find the word regardless of whether it is capitalized (e.g., Report.pdf).
+- `mv * archive/` - To move all files from the current directory to a subdirectory named `archive` 
+- Which of the following commands would write the current shell's history to the history file (`~/.bash_history`)
+  - history -w: This writes the entire in-memory history list of the current shell session to the history file (usually ~/.bash_history), overwriting its current contents.
+  - history -a: This appends only the new history lines (those entered since the start of the current session) to the history file. This is often preferred to avoid overwriting history from other open terminal sessions.
+  - history -r: This reads the contents of the history file and appends them to the current in-memory history list.
+ - history --write: This is not a standard flag for the Bash history builtin.
+- Which of the following `tar` commands would correctly list the contents of a gzipped archive named `archive.tar.gz` without extracting them?
+  - tar -tzf archive.tar.gz
+    - -t (or --list): This is the primary function for listing the table of contents of an archive without extracting any files.
+   - -z (or --gzip): This tells tar to filter the archive through gzip to decompress it on the fly so it can be read.
+   - -f (or --file): This specifies the filename of the archive to act upon. This flag must be followed immediately by the name of the archive.
+- To enable X11 forwarding over an SSH connection, you would use the `-X` option. If you are connecting to a trusted host and need to bypass some security filters that might break certain applications, you can use the -Y option (Trusted X11 forwarding) instead. 
+- ### wget vs curl
+- wget: This is generally the preferred choice for simple file downloads and "mirroring" entire websites. It is designed to be a robust downloader that automatically handles retries and can run in the background.
+curl: This is a more versatile tool ("Client URL") used by developers to interact with APIs and transfer data. While it can download files, its primary strength is its support for a vast range of protocols and complex data transfers. 
