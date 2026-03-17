@@ -753,3 +753,20 @@ Her favorite browser (Firefox and Chrome), editor, gedit and Screenshot applicat
 
    - Jane Doe’s home folder /home/jdoe is preserved, so files remain accessible to admins.
 
+### REVISION
+1. A soft link, also known as a symbolic link, is just a shortcut that points to the filename and becomes broken or "dangling" if the original file is moved or removed.
+- a hard link is a direct reference to a file's data on the disk, sharing the same inode, meaning it remains valid even if the original filename is deleted.
+2. How to check disk space and inode usage in Linux - df -h 
+3.  How to check memory and CPU usage in Linux?
+The top or htop programs provide a real-time interactive dashboard of all system resources; the free -h command provides a brief picture of available RAM; and mpstat provides a comprehensive breakdown of processor activity.
+4. . What is a zombie process in Linux?
+
+A zombie process, also known as a dead process, is a terminated child process that stays in the system's process table because its parent has not yet used the wait() system function to check its exit status. As a result, it occupies a Process ID (PID) without using any CPU or RAM.
+5. . How to check open ports in Linux?
+
+Use the more recent ss -tulpn command or the older netstat -tulpn command to list all TCP and UDP sockets that are listening, together with the Process IDs (PIDs) and service names that correspond to them, to verify open ports on Linux.
+
+. What is RAID, and explain RAID levels?
+
+Depending on the particular "level" selected, RAID (Redundant Array of Independent Disks) is a storage virtualization technology that combines several physical hard drives into a single logical unit to enhance performance, offer data redundancy, or both.
+
