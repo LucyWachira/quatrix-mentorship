@@ -1126,3 +1126,322 @@ local   exam            jdoe                                    ident
 ```
 - Test jdoe access: ```sudo -u jdoe psql -d exam```
 - To check permissions: \du , \dp
+
+## REVISION
+
+Which command is used to connect to a PostgreSQL database?
+a) psql -d database_name ✅
+b) pg_connect database_name
+c) connect postgres database_name
+d) db_connect database_name
+
+What is the default port used by PostgreSQL?
+a) 3306
+b) 5432 ✅
+c) 1521
+d) 8080
+
+Which of the following is used to list all databases in PostgreSQL?
+a) \l ✅
+b) \dt
+c) \du
+d) \db
+
+How do you list all tables in the current database?
+a) \l
+b) \dt ✅
+c) \df
+d) \du
+
+What command is used to create a new database in PostgreSQL?
+a) CREATE DATABASE dbname; ✅
+b) NEW DATABASE dbname;
+c) INIT DATABASE dbname;
+d) ADD DATABASE dbname;
+
+How do you delete a PostgreSQL database?
+a) DROP DATABASE dbname; ✅
+b) REMOVE DATABASE dbname;
+c) DELETE DATABASE dbname;
+d) DESTROY DATABASE dbname;
+
+Which SQL command is used to add a new column to an existing table?
+a) ALTER TABLE tablename ADD COLUMN columnname datatype; ✅
+b) UPDATE TABLE tablename ADD COLUMN columnname datatype;
+c) INSERT TABLE tablename ADD COLUMN columnname datatype;
+d) MODIFY TABLE tablename ADD COLUMN columnname datatype;
+
+How do you view the structure of a table in PostgreSQL?
+a) \d tablename ✅
+b) \s tablename
+c) \l tablename
+d) \t tablename
+
+Which data type is used to store variable-length character strings in PostgreSQL?
+a) CHAR
+b) VARCHAR
+c) TEXT
+d) All of the above ✅
+
+Which PostgreSQL command is used to create a user?
+a) CREATE USER username; ✅
+b) ADD USER username;
+c) NEW USER username;
+d) INSERT USER username;
+
+How do you grant all privileges on a database to a user?
+a) GRANT ALL PRIVILEGES ON DATABASE dbname TO username; ✅
+b) ALLOW ALL PRIVILEGES dbname TO username;
+c) PERMIT ALL ON dbname TO username;
+d) GIVE ALL PRIVILEGES dbname TO username;
+
+Which command shows all roles/users in PostgreSQL?
+a) \du ✅
+b) \dt
+c) \l
+d) \df
+
+How do you start the PostgreSQL service on Linux?
+a) sudo systemctl start postgresql ✅
+b) sudo service postgresql stop
+c) pg_start
+d) postgres start
+
+How do you stop the PostgreSQL service on Linux?
+a) sudo systemctl stop postgresql ✅
+b) sudo systemctl start postgresql
+c) pg_stop
+d) stop postgresql
+
+What is the command to check the version of PostgreSQL?
+a) postgres --version
+b) psql --version
+c) pg_version
+d) Both a and b ✅
+
+Which function returns the current date and time in PostgreSQL?
+a) CURRENT_DATE
+b) NOW() ✅
+c) GETDATE()
+d) DATE()
+
+How do you create an index on a column in PostgreSQL?
+a) CREATE INDEX indexname ON tablename(columnname); ✅
+b) ADD INDEX indexname ON tablename(columnname);
+c) INDEX tablename(columnname);
+d) NEW INDEX indexname ON tablename(columnname);
+
+Which clause is used to filter query results?
+a) WHERE ✅
+b) HAVING
+c) GROUP BY
+d) ORDER BY
+
+How do you sort the results of a query in descending order?
+a) ORDER BY columnname ASC
+b) ORDER BY columnname DESC ✅
+c) SORT columnname DESC
+d) FILTER columnname DESC
+
+How do you rename a table in PostgreSQL?
+a) ALTER TABLE oldname RENAME TO newname; ✅
+b) RENAME TABLE oldname TO newname;
+c) UPDATE TABLE oldname SET name = newname;
+d) MODIFY TABLE oldname TO newname;
+
+Which SQL statement is used to remove rows from a table?
+a) DELETE FROM tablename WHERE condition; ✅
+b) REMOVE FROM tablename WHERE condition;
+c) TRUNCATE tablename WHERE condition;
+d) DROP ROW tablename;
+
+Which command removes all rows from a table but keeps the structure?
+a) TRUNCATE tablename; ✅
+b) DELETE FROM tablename;
+c) DROP TABLE tablename;
+d) REMOVE tablename;
+
+How do you create a view in PostgreSQL?
+a) CREATE VIEW viewname AS SELECT ...; ✅
+b) NEW VIEW viewname AS SELECT ...;
+c) MAKE VIEW viewname AS SELECT ...;
+d) DEFINE VIEW viewname AS SELECT ...;
+
+Which function can be used to count rows in a table?
+a) COUNT(*) ✅
+b) SUM(*)
+c) TOTAL(*)
+d) NUMBER(*)
+
+How do you create a sequence in PostgreSQL?
+a) CREATE SEQUENCE seq_name; ✅
+b) NEW SEQUENCE seq_name;
+c) INIT SEQUENCE seq_name;
+d) ADD SEQUENCE seq_name;
+
+Which command shows the current sequence value?
+a) SELECT currval('seq_name'); ✅
+b) SELECT nextval('seq_name');
+c) SHOW seq_name;
+d) PRINT seq_name;
+
+What is the default transaction behavior in PostgreSQL?
+a) Autocommit ✅
+b) Manual commit
+c) Auto rollback
+d) Deferred commit
+
+How do you begin a transaction in PostgreSQL?
+a) BEGIN;
+b) START TRANSACTION;
+c) INIT TRANSACTION;
+d) Both a and b ✅
+
+How do you save changes made in a transaction?
+a) COMMIT; ✅
+b) SAVE;
+c) APPLY;
+d) END;
+
+How do you undo changes made in a transaction?
+a) ROLLBACK; ✅
+b) UNDO;
+c) REVERT;
+d) CANCEL;
+
+Which clause is used with GROUP BY to filter aggregated results?
+a) HAVING ✅
+b) WHERE
+c) ORDER BY
+d) LIMIT
+
+Which join returns all records from the left table and matched records from the right table?
+a) LEFT JOIN ✅
+b) RIGHT JOIN
+c) INNER JOIN
+d) FULL JOIN
+
+Which join returns only records that have matching values in both tables?
+a) INNER JOIN ✅
+b) LEFT JOIN
+c) RIGHT JOIN
+d) FULL JOIN
+
+How do you create a foreign key constraint?
+a) FOREIGN KEY (column) REFERENCES othertable(column); ✅
+b) LINK KEY (column) REFERENCES othertable(column);
+c) ASSOCIATE KEY (column) REFERENCES othertable(column);
+d) CONNECT KEY (column) REFERENCES othertable(column);
+
+Which constraint ensures that a column cannot contain NULL values?
+a) NOT NULL ✅
+b) PRIMARY KEY
+c) UNIQUE
+d) CHECK
+
+Which constraint ensures all values in a column are unique?
+a) UNIQUE ✅
+b) NOT NULL
+c) PRIMARY KEY
+d) FOREIGN KEY
+
+Which constraint uniquely identifies a row in a table?
+a) PRIMARY KEY ✅
+b) FOREIGN KEY
+c) UNIQUE
+d) CHECK
+
+How do you create a trigger in PostgreSQL?
+a) CREATE TRIGGER trigger_name BEFORE/AFTER INSERT/UPDATE/DELETE ON table_name FOR EACH ROW EXECUTE FUNCTION function_name(); ✅
+b) NEW TRIGGER ...
+c) INIT TRIGGER ...
+d) ADD TRIGGER ...
+
+How do you define a stored function in PostgreSQL?
+a) CREATE FUNCTION function_name() RETURNS datatype AS $$ ... $$ LANGUAGE plpgsql; ✅
+b) NEW FUNCTION ...
+c) DEFINE FUNCTION ...
+d) ADD FUNCTION ...
+
+Which command is used to backup a PostgreSQL database?
+a) pg_dump dbname > backupfile.sql ✅
+b) backup dbname > backupfile.sql
+c) save dbname > backupfile.sql
+d) pg_save dbname > backupfile.sql
+
+Which command restores a PostgreSQL database from a backup file?
+a) psql dbname < backupfile.sql ✅
+b) pg_restore dbname < backupfile.sql
+c) restore dbname < backupfile.sql
+d) load dbname < backupfile.sql
+
+How do you enable logging in PostgreSQL?
+a) Modify postgresql.conf and set logging_collector = on ✅
+b) psql --enable-logging
+c) pg_log on
+d) ENABLE LOGGING
+
+Which function returns the length of a string in PostgreSQL?
+a) LENGTH(string) ✅
+b) LEN(string)
+c) CHAR_COUNT(string)
+d) SIZE(string)
+
+Which function converts a string to uppercase?
+a) UPPER(string) ✅
+b) TOUPPER(string)
+c) UPCASE(string)
+d) CAPITALIZE(string)
+
+Which function converts a string to lowercase?
+a) LOWER(string) ✅
+b) TOLOWER(string)
+c) DOWNCASE(string)
+d) DECAPITALIZE(string)
+
+How do you limit the number of rows returned by a query?
+a) LIMIT number ✅
+b) TOP number
+c) ROWCOUNT number
+d) MAXROWS number
+
+Which keyword is used to combine results of two queries without duplicates?
+a) UNION ✅
+b) JOIN
+c) MERGE
+d) COMBINE
+
+Which keyword combines results and includes duplicates?
+a) UNION ALL ✅
+b) UNION
+c) JOIN ALL
+d) MERGE ALL
+
+How do you add a comment to a table in PostgreSQL?
+a) COMMENT ON TABLE tablename IS 'text'; ✅
+b) ADD COMMENT TO TABLE tablename 'text';
+c) COMMENT TABLE tablename 'text';
+d) SET COMMENT tablename 'text';
+
+Which command shows all functions in the current database?
+a) \df ✅
+b) \dt
+c) \du
+d) \dv
+
+
+- Which command line utility is the interactive terminal for working with PostgreSQL databases? psql
+-What does the EXPLAIN command do in PostgreSQL? - B.
+It shows the execution plan that the planner generates for a statement.
+Correct! EXPLAIN displays the execution plan, showing how the database intends to scan tables and join data. 
+- What acronym is used to describe the set of properties (Atomicity, Consistency, Isolation, Durability) that guarantee reliable database transactions?
+- GIN (Generalized Inverted Index) is the standard choice for full-text search and JSONB data, as it allows for multiple keys per row
+- 
+If you need to create a backup of every single database within a PostgreSQL cluster, which command-line utility should you use?-Correct! pg_dumpall extracts a PostgreSQL database cluster into a script file, including global objects like roles and tablespace
+-UNIQUE
+Correct! A UNIQUE constraint ensures all non-null values are different, while typically allowing multiple NULL entries 
+- How do you view logs for a specific service? journalctl -u servicename
+- Correct! DISTINCT ON is a powerful PostgreSQL extension that keeps only the first row of each set where the expression evaluates to the same value
+- ct! EXCEPT (or MINUS in some other DBs) returns all rows from the first query that are not returned by the second query.
+- Which SQL keyword is required to aggregate data, such as finding the average score for each county?B.
+GROUP BY
