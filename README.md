@@ -208,13 +208,23 @@ sudo apt install fontconfig openjdk-21-jre
 - `sudo systemctl enable jenkins` Enabling Jenkins at boot
 - Checking Jenkins service status `sudo systemctl status jenkins`
 
+
+2. **Configure nginx and certbot to use the domain name https://test.jenkins.quatrixglobal.com to access Jenkins installation (If an email address is requested during certificate creation, use support@quatrixglobal.com)**
+
 1. Install Nginx: 
 ```
 sudo apt update
 sudo apt install nginx -y
 ```
+
+- Nginx reverse proxy	-Jenkins runs on port 8080. Nginx listens on port 80/443 and forwards traffic to Jenkins. It also handles HTTPS termination.
+- Certbot (Let’s Encrypt)	Provides a free SSL/TLS certificate, enabling HTTPS so traffic is encrypted.
+- Domain name mapping	Makes Jenkins accessible via https://test.jenkins.quatrixglobal.com instead of http://your-server-ip:8080.
+
+
 2. Create a Configuration File: This tells Nginx how to handle requests for your specific domain.
-`sudo nano /etc/nginx/sites-available/jenkins`
+`sudo vi /etc/nginx/sites-available/jenkins`
+
 Insert: 
 ```
 server {
@@ -230,19 +240,30 @@ server {
     }
 }
 ```
+
+- server_name: The domain name your users will type.
+- proxy_pass: Forwards requests from Nginx to Jenkins (running on localhost:8080).
+- proxy_set_header: Ensures Jenkins receives the correct client IP and protocol info.
+
 3. Activate the configuration
 `sudo ln -s /etc/nginx/sites-available/jenkins /etc/nginx/sites-enabled/`
+
 sudo nginx -t  # Tests for syntax errors
 `sudo systemctl restart nginx`
-Step 2: Secure with Certbot
+
+4. Step 2: Secure with Certbot
 Install Certbot:`sudo apt install certbot python3-certbot-nginx -y`
 
-Run the Certificate Generator: This command talks to Let's Encrypt, verifies you own the domain, and automatically updates your Nginx file to use HTTPS.
+5. Run the Certificate Generator: This command talks to Let's Encrypt, verifies you own the domain, and automatically updates your Nginx file to use HTTPS.
 `sudo certbot --nginx -d test.jenkins.quatrixglobal.com --email support@quatrixglobal.com --agree-tos --no-eff-email`
 Step 3: Unlock Jenkins and Initial Setup
 Get your Admin Password `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
-Access Jenkins: Open your browser and go to https://test.jenkins.quatrixglobal.com.
+- Access Jenkins: Open your browser and go to https://test.jenkins.quatrixglobal.com.
 - Setup Wizard:
 Paste the password you just copied.
 Select "Install Suggested Plugins." This installs the core tools (Git, Pipeline, etc.) needed for CI/CD.
 
+- Utilizing the GitHub repo that you created at the beginning of this practical assessment:
+  - Create a multi-branch pipeline for this repo
+  - Ensure that a Jenkins build is automatically triggered when changes are pushed to GitHub for this repo. Instructions for this:
+  - Create a Jenkinsfile in your repo.
