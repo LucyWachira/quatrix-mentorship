@@ -1,8 +1,15 @@
 pipeline {
     agent any
 
+    environment {
+        INITIALS = "LW"
+        // This must match the ID you created in Jenkins Credentials exactly
+        SSH_KEY_ID = "traccar-ssh-key"
+        REMOTE_TARGET = "lwachira@test.traccar.quatrixglobal.com"
+    }
+
     stages {
-        stage('Build Info') {
+        stage('Processing Build') {
             steps {
                 echo "Running build for branch: ${env.BRANCH_NAME}"
             }
@@ -10,38 +17,31 @@ pipeline {
     }
 
     post {
-        success {
+        // 'always' ensures the report is created whether the build passes or fails
+        always {
             sshagent(['traccar-ssh-key']) {
                 sh """
-                ssh -o StrictHostKeyChecking=no lwachira@test.traccar.quatrixglobal.com "
+                ssh -o StrictHostKeyChecking=no ${env.REMOTE_TARGET} << 'EOF'
+                    # --- These commands run ONLY on the test.traccar server ---
+                    
+                    # 1. Generate timestamp and filename
                     NOW=\$(date +%Y%m%d-%H%M%S)
-                    FILE=/tmp/LW-\$NOW.txt
-                    STIME=\$(date +'%Y-%m-%d %H:%M hrs')
-                    SVER=\$(lsb_release -ds || cat /etc/os-release | grep PRETTY_NAME | cut -d'=' -f2)
+                    FILE="/tmp/${env.INITIALS}-\$NOW.txt"
+
+                    # 2. Collect server data
+                    STIME=\$(date +"%Y-%m-%d %H:%M hrs")
+                    SVER=\$(lsb_release -ds || grep PRETTY_NAME /etc/os-release | cut -d'=' -f2 | tr -d '"')
                     SKERN=\$(uname -sr)
 
-                    echo 'Branch: ${env.BRANCH_NAME}' > \$FILE
-                    echo 'Status: SUCCESS' >> \$FILE
-                    echo 'Time: \$STIME' >> \$FILE
-                    echo 'Server Version: \$SVER' >> \$FILE
-                    echo 'Server Kernel: \$SKERN' >> \$FILE
-                "
-                """
-            }
-        }
+                    # 3. Create the report file
+                    echo "Branch: ${env.BRANCH_NAME}" > "\$FILE"
+                    echo "Status: ${currentBuild.currentResult}" >> "\$FILE"
+                    echo "Time: \$STIME" >> "\$FILE"
+                    echo "Server Version: \$SVER" >> "\$FILE"
+                    echo "Server Kernel: \$SKERN" >> "\$FILE"
 
-        failure {
-            sshagent(['traccar-ssh-key']) {
-                sh """
-                ssh -o StrictHostKeyChecking=no lwachira@test.traccar.quatrixglobal.com "
-                    NOW=\$(date +%Y%m%d-%H%M%S)
-                    FILE=/tmp/LW-\$NOW.txt
-                    STIME=\$(date +'%Y-%m-%d %H:%M hrs')
-
-                    echo 'Branch: ${env.BRANCH_NAME}' > \$FILE
-                    echo 'Status: FAILED' >> \$FILE
-                    echo 'Time: \$STIME' >> \$FILE
-                "
+                    echo "Report successfully created: \$FILE"
+EOF
                 """
             }
         }
