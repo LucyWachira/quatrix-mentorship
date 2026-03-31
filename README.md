@@ -263,6 +263,10 @@ Get your Admin Password `sudo cat /var/lib/jenkins/secrets/initialAdminPassword`
 Paste the password you just copied.
 Select "Install Suggested Plugins." This installs the core tools (Git, Pipeline, etc.) needed for CI/CD.
 
+- Create user accounts for everyone in the tech team and share the details with each of them.
+  - Go to settings, manage jenkins, click on create user(+), add the credentials then click save
+  - To assign roles: Go to settings, manage and assign roles, click on assign roles, then add user (the one created above) then tick the role you eant to assign to that user.
+
 - Utilizing the GitHub repo that you created at the beginning of this practical assessment:
   - Create a multi-branch pipeline for this repo
   - Ensure that a Jenkins build is automatically triggered when changes are pushed to GitHub for this repo. Instructions for this:
