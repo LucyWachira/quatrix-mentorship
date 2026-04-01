@@ -17,6 +17,23 @@ pipeline {
     }
 
     post {
+        // Build succeeded Notification
+        success {
+          script {
+            githubNotify context: 'CI/CD Pipeline',
+                         description: 'Build succeeded',
+                         status: 'SUCCESS'
+                  } 
+                }    
+
+            // Build failed Notification
+        failure {
+          script {
+            githubNotify context: 'CI/CD Pipeline',
+                         description: 'Build failed',
+                         status: 'FAILURE'
+                  } 
+                }    
         // 'always' ensures the report is created whether the build passes or fails
         always {
             sshagent(['traccar-ssh-key']) {
