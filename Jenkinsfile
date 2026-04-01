@@ -29,7 +29,7 @@ pipeline {
 
                         # 3. Create the report file
                         echo "Branch: ${env.BRANCH_NAME}" > "\$FILE"
-                        echo "Status: IN_PROGRESS" >> "\$FILE"
+                        echo "Status: ${currentBuild.currentResult}" >> "\$FILE" >> "\$FILE"
                         echo "Time: \$STIME" >> "\$FILE"
                         echo "Server Version: \$SVER" >> "\$FILE"
                         echo "Server Kernel: \$SKERN" >> "\$FILE"
