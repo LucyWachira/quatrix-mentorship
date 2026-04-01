@@ -271,3 +271,8 @@ Select "Install Suggested Plugins." This installs the core tools (Git, Pipeline,
   - Create a multi-branch pipeline for this repo
   - Ensure that a Jenkins build is automatically triggered when changes are pushed to GitHub for this repo. Instructions for this:
   - Create a Jenkinsfile in your repo.
+    - Generating ssh keys for jenkins: 
+    `sudo -u jenkins ssh-keygen -t ecdsa`
+    
+    - Located in: `sudo cat /var/lib/jenkins/.ssh/id_ecdsa`
+    - To test it: while in test-traccar: sudo -u jenkins ssh lwachira@test.traccar.quatrixglobal.com
