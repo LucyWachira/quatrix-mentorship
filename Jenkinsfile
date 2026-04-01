@@ -22,7 +22,7 @@ pipeline {
             sshagent(['traccar-ssh-key']) {
                 sh """
                 ssh -o StrictHostKeyChecking=no ${env.REMOTE_TARGET} << 'EOF'
-                    # --- These commands run ONLY on the test.traccar server ---
+                
                     
                     # 1. Generate timestamp and filename
                     NOW=\$(date +%Y%m%d-%H%M%S)
@@ -30,7 +30,7 @@ pipeline {
 
                     # 2. Collect server data
                     STIME=\$(date +"%Y-%m-%d %H:%M hrs")
-                    SVER=\$(lsb_release -ds || grep PRETTY_NAME /etc/os-release | cut -d'=' -f2 | tr -d '"')
+                    SVER=\$(lsb_release -ds)
                     SKERN=\$(uname -sr)
 
                     # 3. Create the report file
