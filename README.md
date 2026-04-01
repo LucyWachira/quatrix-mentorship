@@ -276,3 +276,4 @@ Select "Install Suggested Plugins." This installs the core tools (Git, Pipeline,
     
     - Located in: `sudo cat /var/lib/jenkins/.ssh/id_ecdsa`
     - To test it: while in test-traccar: sudo -u jenkins ssh lwachira@test.traccar.quatrixglobal.com
+    pipeline
