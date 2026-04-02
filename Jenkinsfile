@@ -48,7 +48,7 @@ EOF
                 githubNotify context: 'CI/CD Pipeline', description: 'Build succeeded', status: 'SUCCESS'
             // Teams Notification
             office365ConnectorSend status: 'Success',
-            message: "✅ Jenkins Build Successful!"
+            message: "✅ Jenkins Build Successful",
             webhookUrl:'https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed71fd22f5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a_bFkAFbC5crTPeUkhromBCe5PWf-NqStrcOlY58xws'
             
             }
@@ -59,7 +59,7 @@ EOF
                 
              // Teams Notification
             office365ConnectorSend status: 'Failure',
-             message: "❌ Jenkins Build Failed."
+             message: "❌ Jenkins Build Failed.",
             webhookUrl:'https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed71fd22f5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a_bFkAFbC5crTPeUkhromBCe5PWf-NqStrcOlY58xws'
             }
         }
