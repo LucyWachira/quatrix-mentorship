@@ -211,7 +211,8 @@ sudo apt install fontconfig openjdk-21-jre
 
 2. **Configure nginx and certbot to use the domain name https://test.jenkins.quatrixglobal.com to access Jenkins installation (If an email address is requested during certificate creation, use support@quatrixglobal.com)**
 
-1. Install Nginx: 
+1. Install Nginx:
+
 ```
 sudo apt update
 sudo apt install nginx -y
@@ -265,15 +266,144 @@ Select "Install Suggested Plugins." This installs the core tools (Git, Pipeline,
 
 - Create user accounts for everyone in the tech team and share the details with each of them.
   - Go to settings, manage jenkins, click on create user(+), add the credentials then click save
-  - To assign roles: Go to settings, manage and assign roles, click on assign roles, then add user (the one created above) then tick the role you eant to assign to that user.
+  - To assign roles: Go to settings, manage and assign roles, click on assign roles, then add user (the one created above) then tick the role you want to assign to that user.
 
-- Utilizing the GitHub repo that you created at the beginning of this practical assessment:
+**4. Utilizing the GitHub repo that you created at the beginning of this practical assessment:**
   - Create a multi-branch pipeline for this repo
-  - Ensure that a Jenkins build is automatically triggered when changes are pushed to GitHub for this repo. Instructions for this:
-  - Create a Jenkinsfile in your repo.
-    - Generating ssh keys for jenkins: 
+    - **Configure Jenkins Multi-Branch Pipeline**
+    1. Open your Jenkins dashboard.
+    2. Click New Item → Multibranch Pipeline → Give it a name(my-multibranch pipeline).
+    3. In Branch Sources, add your GitHub repo:
+        - Select GitHub.
+       - Enter your repository URL.(from GitHub click on the repo then code to get the http url)
+       - Credentials: Add your GitHub Personal Access Token (PAT) if required. To generate a PAT token go to settings-> developer settings->personal access tokens-> click Tokens(classic)
+
+    - To create the jenkinsfile: `vi Jenkinsfile`
+    then confirm the branch you are working on (practical-jenkins) then `git add Jenkinsfile` `git commit -m "Added the Jenkinsfile to trigger the pipeline"` `git push origin practicals-jenkins`
+    - To copy the Jenkinsfile to all other branches:
+
+   ```
+   git checkout feature/git-module 
+   git checkout practicals-jenkins -- Jenkinsfile
+   git add Jenkinsfile 
+   git commit -m "Added the Jenkinsfile to trigger the pipeline"
+   git push origin feature/git-module 
+   ```
+
+  - **Ensure that a Jenkins build is automatically triggered when changes are pushed to GitHub for this repo.**       Instructions for this:
+    - To trigger the build automatically i have to configure a webhook:
+    - Set up GitHub Webhook
+       1.Go to your GitHub repo → Settings → Webhooks → Add webhook.
+       2.payload URL: http://test.jenkins.quatrixglobal.com/github-webhook/
+       3.Content type: application/json.
+       4.Trigger: Just the push event.Tick on active then click add webhook.
+
+  - Whenever The build should:
+   - ssh into test.traccar
+   - And create a file in /tmp with the format: KK-YYYYMMDD-HHMMSS.txt (where KK are your first and last name initials)
+   - In the file, it should contain :
+Git or GitHub Branch name
+Build Status ie OR
+Date and time of deployment server and
+Server Version and it's codename:
+Example of filename KK-2025-08-02-134451.txt (NOTE this should be the time of the test.traccar server NOT jenkins server time) and contents:
+Branch: feature/script-enhancement
+Status: Build Failed
+Time: 2025-08-01 1453 hrs
+Server Version: Debian 12 - Bookworm
+Server Kernel: Linux test-traccar 6.16-rc7-amd64
+Exit ssh
+  - Ensure Build successes/failures are relayed back to: GitHub. There should be green check for successes and red X for failures.
+## Solution:
+  - Generating ssh keys for jenkins: 
     `sudo -u jenkins ssh-keygen -t ecdsa`
     
     - Located in: `sudo cat /var/lib/jenkins/.ssh/id_ecdsa`
-    - To test it: while in test-traccar: sudo -u jenkins ssh lwachira@test.traccar.quatrixglobal.com
-    pipeline - jenkins
+    - To test it: while in test-traccar: `sudo -u jenkins ssh lwachira@test.traccar.quatrixglobal.com`
+- Save the private key in jenkins dashboard: Manage jenkins->credentials->add credentials->kind: ssh username with private key ->ID - traccar-ssh-key( this is the ssh-agent that will be used in the script: its just a secure way whenever jenkins needs to ssh) -> username:(the one you use to log in to test-traccar) lwachira-> private key : click add then paste the key -> click create
+- This is the script 
+
+```
+pipeline {
+    agent any
+
+    environment {
+        INITIALS = "LW"
+        SSH_KEY_ID = "traccar-ssh-key"
+        REMOTE_TARGET = "lwachira@test.traccar.quatrixglobal.com"
+    }
+
+    stages {
+        stage('Processing Build') {
+            steps {
+                echo "Running build for branch: ${env.BRANCH_NAME}"
+            }
+        }
+        stage('Generate Remote Report') {
+            steps {
+                sshagent(['traccar-ssh-key']) {
+                    sh """
+                    ssh -o StrictHostKeyChecking=no ${env.REMOTE_TARGET} << 'EOF'
+                        # 1. Generate timestamp and filename
+                        NOW=\$(date +%Y%m%d-%H%M%S)
+                        FILE="/tmp/${env.INITIALS}-\$NOW.txt"
+
+                        # 2. Collect server data
+                        STIME=\$(date +"%Y-%m-%d %H:%M hrs")
+                        SVER=\$(lsb_release -ds)
+                        SKERN=\$(uname -sr)
+
+                        # 3. Create the report file
+                        echo "Branch: ${env.BRANCH_NAME}" > "\$FILE"
+                        echo "Status: ${currentBuild.currentResult}" >> "\$FILE" >> "\$FILE"
+                        echo "Time: \$STIME" >> "\$FILE"
+                        echo "Server Version: \$SVER" >> "\$FILE"
+                        echo "Server Kernel: \$SKERN" >> "\$FILE"
+
+                        echo "Report successfully created: \$FILE"
+EOF
+                    """
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            script {
+                githubNotify context: 'CI/CD Pipeline', description: 'Build succeeded', status: 'SUCCESS'
+            // Teams Notification
+            office365ConnectorSend status: 'Success',
+            message: "✅ Jenkins Build Successful",
+            webhookUrl:'https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed71fd22f5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a_bFkAFbC5crTPeUkhromBCe5PWf-NqStrcOlY58xws'
+            
+            }
+        }
+        failure {
+            script {
+                githubNotify context: 'CI/CD Pipeline', description: 'Build failed', status: 'FAILURE'
+                
+             // Teams Notification
+            office365ConnectorSend status: 'Failure',
+             message: "❌ Jenkins Build Failed.",
+            webhookUrl:'https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed71fd22f5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a_bFkAFbC5crTPeUkhromBCe5PWf-NqStrcOlY58xws'
+            }
+        }
+    }
+}
+```
+- To check if the file has been created: ssh to test-traccar then `ls /tmp/` `sudo cat /tmp/<file>`:
+```
+lwachira@test-traccar:~$ sudo cat /tmp/LW-20260402-083552.txt
+[sudo] password for lwachira: 
+Branch: practicals-jenkins
+Status: SUCCESS
+Time: 2026-04-02 08:35 hrs
+Server Version: Debian GNU/Linux 13 (trixie)
+Server Kernel: Linux 6.12.73+deb13-amd64
+```
+- when setting up the notification for GitHub install: pipeline GitHub Notify Step. Go to manage jenkins->plugins->available plugins-> search then click install.
+- To configure that teams gets the notification:
+ - under teams and channels-> click the chennel(Testing Jenkins) -> click the ... then go to workflows-> search for webhooks ->select send alerts to a channel -> save and click on copy wehook link to copy the url which will be pasted in our script.
+ - Go to jenkins install office 365 connector
+ Testing
