@@ -11,7 +11,7 @@ pipeline {
     stages {
         stage('Processing Build') {
             steps {
-                echo "Running build for branch: ${env.BRANCH_NAME}"
+                echoo "Running build for branch: ${env.BRANCH_NAME}"
             }
         }
         stage('Generate Remote Report') {
