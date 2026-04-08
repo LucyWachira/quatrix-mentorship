@@ -5,7 +5,7 @@ pipeline {
         INITIALS = "LW"
         SSH_KEY_ID = "traccar-ssh-key"
         REMOTE_TARGET = "lwachira@test.traccar.quatrixglobal.com"
-        TEAMS_WEBHOOK = "https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed"
+        TEAMS_WEBHOOK = "https://defaulta96a137b5bac4d288f5b9ded43babd.cf.environment.api.powerplatform.com:443/powerautomate/automations/direct/workflows/4e28ac8533db4fcba263aaed71fd22f5/triggers/manual/paths/invoke?api-version=1&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=a_bFkAFbC5crTPeUkhromBCe5PWf-NqStrcOlY58xws"
     }
 
     stages {
@@ -50,7 +50,7 @@ EOF
             // Teams Notification
             office365ConnectorSend status: 'Success',
             message: "✅ Jenkins Build Successful",
-            webhookUrl:'${env.TEAMS_WEBHOOK}'
+            webhookUrl:"${env.TEAMS_WEBHOOK}"
             
             }
         }
@@ -61,7 +61,8 @@ EOF
              // Teams Notification
             office365ConnectorSend status: 'Failure',
              message: "❌ Jenkins Build Failed.",
-            webhookUrl:'${env.TEAMS_WEBHOOK}'
+            webhookUrl:"${env.TEAMS_WEBHOOK}"
+            
             }
         }
     }
